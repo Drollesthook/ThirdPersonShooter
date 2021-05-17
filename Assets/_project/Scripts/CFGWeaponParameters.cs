@@ -8,7 +8,7 @@ namespace Project {
 
         [SerializeField] TypeOfFire _typeOfFire = default;
         [SerializeField] int _identifier = default;
-        [SerializeField] float _fireRate = default;
+        [SerializeField] float _shootDelay = default;
         [SerializeField] float _reloadTime = default;
         [SerializeField] float _damage = default;
         [SerializeField] int _amountOfProjectilesPerShot = default;
@@ -27,7 +27,7 @@ namespace Project {
 
         public float reloadTime => _reloadTime;
 
-        public float fireRate => _fireRate;
+        public float shootDelay => _shootDelay;
 
         public float damage => _damage;
 
