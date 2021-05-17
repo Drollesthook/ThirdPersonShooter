@@ -27,7 +27,8 @@ namespace Project {
         }
 
         public void Shoot() {
-            if(_isReloading || _isOnDelay) return;
+            if(_isReloading || _isOnDelay) 
+                return;
             Ray ray = _mainCamera.ScreenPointToRay(_aimSight.position);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);

@@ -8,14 +8,7 @@ namespace Project {
             _weapon = GetComponentInChildren<Weapon>();
         }
 
-        void Update() {
-            if (Input.GetMouseButton(0)) {
-                ShootWeapon();
-            }
-        }
-
-        void ShootWeapon() {
-            
+        public void ShootWeapon() {
            _weapon.Shoot();
         }
     }

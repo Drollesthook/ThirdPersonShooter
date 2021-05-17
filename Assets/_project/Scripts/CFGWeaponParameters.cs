@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Project {
 
@@ -9,11 +7,12 @@ namespace Project {
     public class CFGWeaponParameters : ScriptableObject {
 
         [SerializeField] TypeOfFire _typeOfFire = default;
-        [SerializeField] int _identity = default;
+        [SerializeField] int _identifier = default;
         [SerializeField] float _fireRate = default;
         [SerializeField] float _reloadTime = default;
         [SerializeField] float _damage = default;
-        [SerializeField] int _amountOfBulletsPerShot = default;
+        [SerializeField] int _amountOfProjectilesPerShot = default;
+        [SerializeField] int _amountOfBulletsInClip = default;
 
         public enum TypeOfFire {
             SingleShot,
@@ -22,7 +21,7 @@ namespace Project {
 
         public TypeOfFire typeOfFire => _typeOfFire;
 
-        public int identity => _identity;
+        public int identifier => _identifier;
 
         public float reloadTime => _reloadTime;
 
@@ -30,6 +29,8 @@ namespace Project {
 
         public float damage => _damage;
 
-        public int amountOfBulletsPerShot => _amountOfBulletsPerShot;
+        public int amountOfProjectilesPerShot => _amountOfProjectilesPerShot;
+
+        public int amountOfBulletsInClip => _amountOfBulletsInClip;
     }
 }
