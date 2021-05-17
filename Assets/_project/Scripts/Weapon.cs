@@ -46,11 +46,14 @@ namespace Project {
         void PlayerShooting(Vector3 shootDirection) {
             Ray ray = _mainCamera.ScreenPointToRay(shootDirection);
             RaycastHit hit;
+            print(ray.direction);
+            Vector3 newRay = ApplySpreadToDirection(ray.direction);
+            print(newRay);
             Bullet bullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
-            if (Physics.Raycast(ray, out hit, _shootMaxDistance)) {
+            if (Physics.Raycast(ray.origin, newRay, out hit, _shootMaxDistance)) {
                 bullet.SetFlyDirection(hit.point);
                 IHittable hittable = hit.collider.GetComponent<IHittable>();
-                Debug.DrawLine(ray.origin, ray.origin + ray.direction*_shootMaxDistance, Color.red);
+                Debug.DrawRay(ray.origin, newRay * _shootMaxDistance, Color.red);
                 if(hittable != null)
                     hittable.OnHit(_shooterId, _weaponId, _weaponDamage);
             }

@@ -19,5 +19,5 @@ MonoBehaviour:
   _damage: 5
   _amountOfProjectilesPerShot: 1
   _amountOfBulletsInClip: 10
-  _spreadAngle: 3
+  _spreadAngle: 0.5
   _shootMaxDistance: 200
