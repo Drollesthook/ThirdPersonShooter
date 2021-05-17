@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour {
     [SerializeField] int _identifier = default;
-    [SerializeField] int _startAmountOfHealth = default;
+
+    public int identifier => _identifier;
 }

@@ -13,6 +13,8 @@ namespace Project {
         [SerializeField] float _damage = default;
         [SerializeField] int _amountOfProjectilesPerShot = default;
         [SerializeField] int _amountOfBulletsInClip = default;
+        [SerializeField] float _spreadAngle = default;
+        [SerializeField] float _shootMaxDistance = default;
 
         public enum TypeOfFire {
             SingleShot,
@@ -32,5 +34,9 @@ namespace Project {
         public int amountOfProjectilesPerShot => _amountOfProjectilesPerShot;
 
         public int amountOfBulletsInClip => _amountOfBulletsInClip;
+
+        public float spreadAngle => _spreadAngle;
+
+        public float shootMaxDistance => _shootMaxDistance;
     }
 }

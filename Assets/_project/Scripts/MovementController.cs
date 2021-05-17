@@ -14,7 +14,7 @@ namespace Project {
       }
 
       public void MoveAndRotate(Vector3 direction, float speedMultiplier) {
-         float targetAngle = _mainCameraTransform.eulerAngles.y;
+         float targetAngle = + _mainCameraTransform.eulerAngles.y;
          float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity,
                                              _turnSmoothTime);
          transform.rotation = Quaternion.Euler(0,angle,0);

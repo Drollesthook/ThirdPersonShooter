@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   _typeOfFire: 0
-  _identity: 1
+  _identifier: 0
   _fireRate: 3
   _reloadTime: 2
   _damage: 5
-  _amountOfBulletsPerShot: 1
+  _amountOfProjectilesPerShot: 1
+  _amountOfBulletsInClip: 10
+  _spreadAngle: 3
+  _shootMaxDistance: 20
