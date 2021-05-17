@@ -8,8 +8,6 @@ namespace Project {
         [SerializeField] float _bulletSpeed = 20;
         [SerializeField] float _timeToLive = 3f;
         
-        Vector3 _flyDirection;
-        float _deathDistance;
 
 
         void Update() {
@@ -18,12 +16,11 @@ namespace Project {
         }
         
         public void SetFlyDirection(Vector3 direction) {
-            _flyDirection = direction - transform.position;
-            _deathDistance = Vector3.Distance(_flyDirection, transform.position);
+            transform.LookAt(direction);
         }
 
         void Fly() {
-            transform.Translate(_flyDirection * _bulletSpeed);
+            transform.Translate(Vector3.forward * _bulletSpeed);
         }
 
         void CheckForDestroy() {

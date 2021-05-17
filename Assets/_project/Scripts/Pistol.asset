@@ -20,4 +20,4 @@ MonoBehaviour:
   _amountOfProjectilesPerShot: 1
   _amountOfBulletsInClip: 10
   _spreadAngle: 3
-  _shootMaxDistance: 20
+  _shootMaxDistance: 200
