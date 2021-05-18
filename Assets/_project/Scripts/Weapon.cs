@@ -1,26 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Project {
-
     public class Weapon : MonoBehaviour {
-
-        [SerializeField] Transform _firePoint = default;
-        [SerializeField] Bullet _bulletPrefab = default;
-        [SerializeField] CFGWeaponParameters _currentWeaponParameters = default;
+        [SerializeField] Bullet _bulletPrefab;
+        [SerializeField] CFGWeaponParameters _currentWeaponParameters;
+        [SerializeField] Transform _firePoint;
         
+        float _bulletsInClip;
+        bool _isOnShootDelay;
+        bool _isWaitingOnRelease;
         Camera _mainCamera;
-        bool _isOnShootDelay, _isWaitingOnRelease;
-        float _shootCooldown, _bulletsInClip;
-        
-        float _spreadAngle = default;
-        float _shootMaxDistance = default;
-        int _weaponId, _shooterId;
-        float _weaponDamage;
+
+        int _weaponId;
+        int _shooterId;
         float _reloadTime;
+        float _shootCooldown;
         float _shootDelay;
-        int _amountOfBulletsInClip, _amountOfProjectilesPerShoot;
+        float _shootMaxDistance;
+        int _amountOfBulletsInClip;
+        int _amountOfProjectilesPerShoot;
+        float _spreadAngle;
+        float _weaponDamage;
         CFGWeaponParameters.TypeOfFire _typeOfFire;
 
         void Awake() {
@@ -34,7 +34,8 @@ namespace Project {
                 if (_shootCooldown <= 0)
                     _isOnShootDelay = false;
             }
-            if(!_isWaitingOnRelease)
+
+            if (!_isWaitingOnRelease)
                 return;
 
             if (Input.GetMouseButtonUp(0))
@@ -42,15 +43,15 @@ namespace Project {
         }
 
         public void Shoot(int shooterId, Vector3 shootDirection) {
-                if (_isOnShootDelay || _isWaitingOnRelease)
-                    return;
-                _shooterId = shooterId;
-            for (int i = 1; i <= _amountOfProjectilesPerShoot; i++) {
+            if (_isOnShootDelay || _isWaitingOnRelease)
+                return;
+
+            _shooterId = shooterId;
+            for (var i = 1; i <= _amountOfProjectilesPerShoot; i++) {
                 if (_shooterId == 0)
                     PlayerShooting(shootDirection);
-                else {
+                else
                     BotShooting(shootDirection);
-                }
             }
 
             _isOnShootDelay = true;
@@ -59,7 +60,7 @@ namespace Project {
                 _isWaitingOnRelease = true;
 
             _bulletsInClip--;
-            if(_bulletsInClip <=0)
+            if (_bulletsInClip <= 0)
                 Reload();
         }
 
@@ -70,12 +71,11 @@ namespace Project {
             Bullet bullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
             if (Physics.Raycast(ray.origin, newRayDirection, out hit, _shootMaxDistance)) {
                 bullet.SetFlyDirection(hit.point);
-                IHittable hittable = hit.collider.GetComponent<IHittable>();
+                var hittable = hit.collider.GetComponent<IHittable>();
                 Debug.DrawRay(ray.origin, newRayDirection * _shootMaxDistance, Color.red);
-                if(hittable != null)
+                if (hittable != null)
                     hittable.OnHit(_shooterId, _weaponId, _weaponDamage);
-            }
-            else 
+            } else
                 bullet.SetFlyDirection(ray.direction * _shootMaxDistance + ray.origin);
         }
 
@@ -84,11 +84,8 @@ namespace Project {
         }
 
         Vector3 ApplySpreadToDirection(Vector3 shootDirection) {
-            return Quaternion.Euler(Random.Range(-_spreadAngle, _spreadAngle), Random.Range(-_spreadAngle, _spreadAngle), 0) * shootDirection;
-        }
-
-        void SetCurrentWeapon() {
-            GetCurrentWeaponsParameters();
+            return Quaternion.Euler(Random.Range(-_spreadAngle, _spreadAngle), Random.Range(-_spreadAngle, _spreadAngle), 0) *
+                shootDirection;
         }
 
         void GetCurrentWeaponsParameters() {
@@ -111,7 +108,4 @@ namespace Project {
             _bulletsInClip = _amountOfBulletsInClip;
         }
     }
-    
-    
 }
-

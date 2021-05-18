@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
 
 namespace Project {
-
-
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapon")]
     public class CFGWeaponParameters : ScriptableObject {
 
-        [SerializeField] TypeOfFire _typeOfFire = default;
-        [SerializeField] int _identifier = default;
-        [SerializeField] float _shootDelay = default;
-        [SerializeField] float _reloadTime = default;
-        [SerializeField] float _damage = default;
-        [SerializeField] int _amountOfProjectilesPerShot = default;
-        [SerializeField] int _amountOfBulletsInClip = default;
-        [SerializeField] float _spreadAngle = default;
-        [SerializeField] float _shootMaxDistance = default;
-
+        [SerializeField] int _amountOfBulletsInClip;
+        [SerializeField] int _amountOfProjectilesPerShot;
+        [SerializeField] float _damage;
+        [SerializeField] int _identifier;
+        [SerializeField] float _reloadTime;
+        [SerializeField] float _shootDelay;
+        [SerializeField] float _shootMaxDistance;
+        [SerializeField] float _spreadAngle;
+        [SerializeField] TypeOfFire _typeOfFire;
+        
         public enum TypeOfFire {
             SingleShot,
             Automatic

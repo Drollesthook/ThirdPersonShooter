@@ -1,36 +1,38 @@
-﻿using UnityEngine;
+﻿using Project.Managers;
+
+using UnityEngine;
 
 namespace Project {
-    
-public class Player : MonoBehaviour {
-    [SerializeField] float _speedMultiplyer = 1;
-    [SerializeField] Transform _aimSight;
-    
-    MovementController _movementController;
-    WeaponController _weaponController;
-    InputManager _inputManager;
+    public class Player : MonoBehaviour {
+        MovementController _movementController;
+        [SerializeField] float _speedMultiplyer = 1;
+        WeaponController _weaponController;
 
-    void Awake() {
-        _weaponController = GetComponent<WeaponController>();
-        _movementController = GetComponent<MovementController>();
-        _inputManager = InputManager.instance;
-    }
+        void Awake() {
+            _weaponController = GetComponent<WeaponController>();
+            _movementController = GetComponent<MovementController>();
+        }
 
-    void Update() {
-        Move();
-        if (Input.GetMouseButton(0))
-            Shoot();
-    }
+        void Start() {
+            InputManager.instance.InputDirectionChanged += InputDirectionChanged;
+        }
 
-    void Move() {
-        _movementController.MoveAndRotate(InputManager.instance.GetInputDirectionNormalized(), _speedMultiplyer);
-    }
+        void OnDestroy() {
+            InputManager.instance.InputDirectionChanged -= InputDirectionChanged;
+        }
 
-    void Shoot() {
-        Vector3 aimSightPosition = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
-        //Vector3 aimSightPosition = _aimSight.position;
-        
-        _weaponController.ShootWeapon(aimSightPosition);
+        void Update() {
+            if (Input.GetMouseButton(0))
+                Shoot();
+        }
+
+        void InputDirectionChanged(Vector3 direction) {
+            _movementController.MoveAndRotate(direction, _speedMultiplyer);
+        }
+
+        void Shoot() {
+            var aimSightPosition = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+            _weaponController.ShootWeapon(aimSightPosition);
+        }
     }
-}
 }

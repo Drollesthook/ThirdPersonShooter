@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Project {
     public class Bullet : MonoBehaviour {
         [SerializeField] float _bulletSpeed = 20;
         [SerializeField] float _timeToLive = 3f;
-        
-
 
         void Update() {
             Fly();
             CheckForDestroy();
         }
-        
+
+        void OnTriggerEnter(Collider other) {
+            Destroy(gameObject);
+        }
+
         public void SetFlyDirection(Vector3 direction) {
             transform.LookAt(direction);
         }
@@ -25,7 +24,7 @@ namespace Project {
 
         void CheckForDestroy() {
             _timeToLive -= Time.deltaTime;
-            if(_timeToLive <=0) 
+            if (_timeToLive <= 0)
                 Destroy(gameObject);
         }
     }

@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Unit : MonoBehaviour {
-    [SerializeField] int _identifier = default;
+namespace Project {
+    public class Unit : MonoBehaviour {
+        [SerializeField] int _identifier;
 
-    public int identifier => _identifier;
+        public int identifier => _identifier;
+    }
 }
