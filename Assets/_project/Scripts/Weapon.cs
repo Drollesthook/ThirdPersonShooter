@@ -29,17 +29,11 @@ namespace Project {
         }
 
         void Update() {
-            if (_isOnShootDelay) {
-                _shootCooldown -= Time.deltaTime;
-                if (_shootCooldown <= 0)
-                    _isOnShootDelay = false;
-            }
-
-            if (!_isWaitingOnRelease)
+            if (!_isOnShootDelay) 
                 return;
-
-            if (Input.GetMouseButtonUp(0))
-                _isWaitingOnRelease = false;
+            _shootCooldown -= Time.deltaTime;
+            if (_shootCooldown <= 0)
+                _isOnShootDelay = false;
         }
 
         public void Shoot(int shooterId, Vector3 shootDirection) {
@@ -62,6 +56,10 @@ namespace Project {
             _bulletsInClip--;
             if (_bulletsInClip <= 0)
                 Reload();
+        }
+
+        public void FireButtonReleased() {
+            _isWaitingOnRelease = false;
         }
 
         void PlayerShooting(Vector3 shootDirection) {

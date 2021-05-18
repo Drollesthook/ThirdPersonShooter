@@ -5,11 +5,15 @@ using UnityEngine;
 namespace Project.Managers {
     public class InputManager : MonoBehaviour {
         static InputManager _instance;
-        public event Action<Vector3> InputDirectionChanged;
-        public event Action ScreenTouched;
-        public event Action ScreenReleased;
+        public event Action<Vector3> inputDirectionChanged;
+        public event Action<int> weaponSelected;
+        public event Action fireButtonPressed;
+        public event Action fireButtonReleased;
+        public event Action aimButtonPressed;
+        public event Action aimButtonReleased;
+        
         [SerializeField] CinemachineFreeLook _cinemachineFreeLook;
-        [SerializeField] float _inputSensititvityThreshold;
+        [SerializeField] float _inputSensitivityThreshold;
         [SerializeField] bool _isInputGoingFromStick;
         [SerializeField] FixedJoystick _joystick;
 
@@ -21,6 +25,8 @@ namespace Project.Managers {
 
 
         void Awake() {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             _halfWidthOfScreen = Screen.width / 2f;
             _instance = this;
             if (_isInputGoingFromStick)
@@ -29,6 +35,8 @@ namespace Project.Managers {
 
         void Update() {
             CalculateInputDirectionNormalized();
+            GetFireButtonState();
+            SelectingWeapon();
             if (!_isInputGoingFromStick)
                 return;
 
@@ -37,8 +45,8 @@ namespace Project.Managers {
 
         void CalculateInputDirectionNormalized() {
             var direction = new Vector3(GetHorizontalInput(), 0, GetVerticalInput());
-            if (direction.magnitude > _inputSensititvityThreshold)
-                InputDirectionChanged?.Invoke(direction.normalized);
+            if (direction.magnitude > _inputSensitivityThreshold)
+                inputDirectionChanged?.Invoke(direction.normalized);
         }
 
         float GetHorizontalInput() {
@@ -47,6 +55,17 @@ namespace Project.Managers {
 
         float GetVerticalInput() {
             return _isInputGoingFromStick ? _joystick.Vertical : Input.GetAxisRaw("Vertical");
+        }
+
+        void GetFireButtonState() {
+            if(Input.GetMouseButtonDown(0))
+                fireButtonPressed?.Invoke();
+            if(Input.GetMouseButtonUp(0))
+                fireButtonReleased?.Invoke();
+        }
+
+        void SelectingWeapon() {
+            
         }
 
         void CameraMove() {

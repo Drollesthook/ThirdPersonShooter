@@ -18,7 +18,13 @@ namespace Project {
             WeaponHolderRotation();
         }
 
-        public void ShootWeapon(Vector3 shootDirection) => _weapon.Shoot(_unit.identifier, shootDirection);
+        public void ShootWeapon(Vector3 shootDirection) {
+            _weapon.Shoot(_unit.identifier, shootDirection);
+        }
+
+        public void FireButtonReleased() {
+            _weapon.FireButtonReleased();
+        }
 
         void WeaponHolderRotation() {
             float targetAngle = _mainCamera.transform.eulerAngles.x;

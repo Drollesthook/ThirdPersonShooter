@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace Project {
     public class Player : MonoBehaviour {
-        MovementController _movementController;
         [SerializeField] float _speedMultiplyer = 1;
+        
+        MovementController _movementController;
         WeaponController _weaponController;
+        bool _isShooting;
 
         void Awake() {
             _weaponController = GetComponent<WeaponController>();
@@ -14,20 +16,33 @@ namespace Project {
         }
 
         void Start() {
-            InputManager.instance.InputDirectionChanged += InputDirectionChanged;
+            InputManager.instance.inputDirectionChanged += OnInputDirectionChanged;
+            InputManager.instance.fireButtonPressed += OnFireButtonPressed;
+            InputManager.instance.fireButtonReleased += OnFireButtonReleased;
         }
 
         void OnDestroy() {
-            InputManager.instance.InputDirectionChanged -= InputDirectionChanged;
+            InputManager.instance.inputDirectionChanged -= OnInputDirectionChanged;
+            InputManager.instance.fireButtonPressed -= OnFireButtonPressed;
+            InputManager.instance.fireButtonReleased -= OnFireButtonReleased;
         }
 
         void Update() {
-            if (Input.GetMouseButton(0))
+            if (_isShooting)
                 Shoot();
         }
 
-        void InputDirectionChanged(Vector3 direction) {
+        void OnInputDirectionChanged(Vector3 direction) {
             _movementController.MoveAndRotate(direction, _speedMultiplyer);
+        }
+
+        void OnFireButtonPressed() {
+            _isShooting = true;
+        }
+
+        void OnFireButtonReleased() {
+            _isShooting = false;
+            _weaponController.FireButtonReleased();
         }
 
         void Shoot() {

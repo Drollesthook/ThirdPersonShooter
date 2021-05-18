@@ -2104,9 +2104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d6ad23183da5e4bb381a7e65b51fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cinemachineFreeLook: {fileID: 28643438}
+  _inputSensitivityThreshold: 0.1
   _isInputGoingFromStick: 0
   _joystick: {fileID: 1826132168}
-  _cinemachineFreeLook: {fileID: 28643438}
 --- !u!1 &1602151218
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,7 +2606,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2051842716}
-  m_LocalRotation: {x: -0.01868135, y: 0.041157916, z: 0.0007696723, w: 0.9989777}
+  m_LocalRotation: {x: -0.018681347, y: 0.041157916, z: 0.00076967216, w: 0.9989777}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2685,10 +2686,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8206735964015277549, guid: 9ba70287958e4f544af8a355bf513076,
-        type: 3}
-      propertyPath: _aimSight
-      value: 
-      objectReference: {fileID: 178258135}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ba70287958e4f544af8a355bf513076, type: 3}
