@@ -2,20 +2,24 @@
 
 namespace Project {
     public class MovementController : MonoBehaviour {
-        [SerializeField] float _playerSpeed = 6f;
-        [SerializeField] float _turnSmoothTime = 0.1f;
-        [SerializeField] float _turnSmoothVelocity;
+        [SerializeField] private float _playerSpeed = 6f;
+        [SerializeField] private float _turnSmoothTime = 0.1f;
+        [SerializeField] private float _turnSmoothVelocity;
+        [SerializeField] private Transform _weaponHolder = default;
 
-        CharacterController _characterController;
-        Transform _mainCameraTransform;
+        private CharacterController _characterController;
+        private Transform _mainCameraTransform;
+        private Camera _mainCamera;
         
-        void Awake() {
+        private void Awake() {
+            _mainCamera = Camera.main;
             _characterController = GetComponent<CharacterController>();
             _mainCameraTransform = Camera.main.transform;
         }
 
-        void Update() {
+        private void Update() {
             Rotate();
+            WeaponHolderRotation();
         }
 
         public void MoveAndRotate(Vector3 direction, float speedMultiplier) {
@@ -28,12 +32,17 @@ namespace Project {
             _characterController.Move(moveDirection * _playerSpeed * speedMultiplier * Time.deltaTime);
         }
 
-        void Rotate() {
+        private void Rotate() {
             float targetAngle = _mainCameraTransform.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity,
                                                 _turnSmoothTime);
 
             transform.rotation = Quaternion.Euler(0, angle, 0);
+        }
+        
+        private void WeaponHolderRotation() {
+            float targetAngle = _mainCamera.transform.eulerAngles.x;
+            _weaponHolder.localRotation = Quaternion.Euler(targetAngle, 0, 0);
         }
     }
 }

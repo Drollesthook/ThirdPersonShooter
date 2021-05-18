@@ -2,15 +2,15 @@
 
 namespace Project {
     public class Bullet : MonoBehaviour {
-        [SerializeField] float _bulletSpeed = 20;
-        [SerializeField] float _timeToLive = 3f;
+        [SerializeField] private float _bulletSpeed = 20;
+        [SerializeField] private float _timeToLive = 3f;
 
-        void Update() {
+        private void Update() {
             Fly();
             CheckForDestroy();
         }
 
-        void OnTriggerEnter(Collider other) {
+        private void OnTriggerEnter(Collider other) {
             Destroy(gameObject);
         }
 
@@ -18,11 +18,11 @@ namespace Project {
             transform.LookAt(direction);
         }
 
-        void Fly() {
+        private void Fly() {
             transform.Translate(Vector3.forward * _bulletSpeed);
         }
 
-        void CheckForDestroy() {
+        private void CheckForDestroy() {
             _timeToLive -= Time.deltaTime;
             if (_timeToLive <= 0)
                 Destroy(gameObject);

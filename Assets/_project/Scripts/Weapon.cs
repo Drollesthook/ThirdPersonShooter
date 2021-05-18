@@ -2,33 +2,33 @@
 
 namespace Project {
     public class Weapon : MonoBehaviour {
-        [SerializeField] Bullet _bulletPrefab;
-        [SerializeField] CFGWeaponParameters _currentWeaponParameters;
-        [SerializeField] Transform _firePoint;
+        [SerializeField] private Bullet _bulletPrefab;
+        [SerializeField] private CFGWeaponParameters _currentWeaponParameters;
+        [SerializeField] private Transform _firePoint;
         
-        float _bulletsInClip;
-        bool _isOnShootDelay;
-        bool _isWaitingOnRelease;
-        Camera _mainCamera;
+        private float _bulletsInClip;
+        private bool _isOnShootDelay;
+        private bool _isWaitingOnRelease;
+        private Camera _mainCamera;
 
-        int _weaponId;
-        int _shooterId;
-        float _reloadTime;
-        float _shootCooldown;
-        float _shootDelay;
-        float _shootMaxDistance;
-        int _amountOfBulletsInClip;
-        int _amountOfProjectilesPerShoot;
-        float _spreadAngle;
-        float _weaponDamage;
-        CFGWeaponParameters.TypeOfFire _typeOfFire;
+        private int _weaponId;
+        private int _shooterId;
+        private float _reloadTime;
+        private float _shootCooldown;
+        private float _shootDelay;
+        private float _shootMaxDistance;
+        private int _amountOfBulletsInClip;
+        private int _amountOfProjectilesPerShoot;
+        private float _spreadAngle;
+        private float _weaponDamage;
+        private CFGWeaponParameters.TypeOfFire _typeOfFire;
 
-        void Awake() {
+        private void Awake() {
             _mainCamera = Camera.main;
             GetCurrentWeaponsParameters();
         }
 
-        void Update() {
+        private void Update() {
             if (!_isOnShootDelay) 
                 return;
             _shootCooldown -= Time.deltaTime;
@@ -62,7 +62,7 @@ namespace Project {
             _isWaitingOnRelease = false;
         }
 
-        void PlayerShooting(Vector3 shootDirection) {
+        private void PlayerShooting(Vector3 shootDirection) {
             Ray ray = _mainCamera.ScreenPointToRay(shootDirection);
             RaycastHit hit;
             Vector3 newRayDirection = ApplySpreadToDirection(ray.direction);
@@ -77,16 +77,16 @@ namespace Project {
                 bullet.SetFlyDirection(ray.direction * _shootMaxDistance + ray.origin);
         }
 
-        void BotShooting(Vector3 shootDirection) {
+        private void BotShooting(Vector3 shootDirection) {
             
         }
 
-        Vector3 ApplySpreadToDirection(Vector3 shootDirection) {
+        private Vector3 ApplySpreadToDirection(Vector3 shootDirection) {
             return Quaternion.Euler(Random.Range(-_spreadAngle, _spreadAngle), Random.Range(-_spreadAngle, _spreadAngle), 0) *
                 shootDirection;
         }
 
-        void GetCurrentWeaponsParameters() {
+        private void GetCurrentWeaponsParameters() {
             _weaponId = _currentWeaponParameters.identifier;
             _shootMaxDistance = _currentWeaponParameters.shootMaxDistance;
             _spreadAngle = _currentWeaponParameters.spreadAngle;
@@ -100,7 +100,7 @@ namespace Project {
             _bulletsInClip = _amountOfBulletsInClip;
         }
 
-        void Reload() {
+        private void Reload() {
             _isOnShootDelay = true;
             _shootCooldown = _reloadTime;
             _bulletsInClip = _amountOfBulletsInClip;

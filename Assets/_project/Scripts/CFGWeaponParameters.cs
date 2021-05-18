@@ -4,15 +4,15 @@ namespace Project {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapon")]
     public class CFGWeaponParameters : ScriptableObject {
 
-        [SerializeField] int _amountOfBulletsInClip;
-        [SerializeField] int _amountOfProjectilesPerShot;
-        [SerializeField] float _damage;
-        [SerializeField] int _identifier;
-        [SerializeField] float _reloadTime;
-        [SerializeField] float _shootDelay;
-        [SerializeField] float _shootMaxDistance;
-        [SerializeField] float _spreadAngle;
-        [SerializeField] TypeOfFire _typeOfFire;
+        [SerializeField] private int _amountOfBulletsInClip;
+        [SerializeField] private int _amountOfProjectilesPerShot;
+        [SerializeField] private float _damage;
+        [SerializeField] private int _identifier;
+        [SerializeField] private float _reloadTime;
+        [SerializeField] private float _shootDelay;
+        [SerializeField] private float _shootMaxDistance;
+        [SerializeField] private float _spreadAngle;
+        [SerializeField] private TypeOfFire _typeOfFire;
         
         public enum TypeOfFire {
             SingleShot,

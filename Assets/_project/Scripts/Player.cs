@@ -4,48 +4,62 @@ using UnityEngine;
 
 namespace Project {
     public class Player : MonoBehaviour {
-        [SerializeField] float _speedMultiplyer = 1;
+        [SerializeField] private float _speedMultiplyer = 1;
         
-        MovementController _movementController;
-        WeaponController _weaponController;
-        bool _isShooting;
+        private MovementController _movementController;
+        private WeaponController _weaponController;
+        private bool _isShooting;
+        private Unit _unit;
 
-        void Awake() {
+        private void Awake() {
+            _unit = GetComponent<Unit>();
             _weaponController = GetComponent<WeaponController>();
             _movementController = GetComponent<MovementController>();
         }
 
-        void Start() {
+        private void Start() {
             InputManager.instance.inputDirectionChanged += OnInputDirectionChanged;
+            InputManager.instance.weaponSelected += OnWeaponSelected;
             InputManager.instance.fireButtonPressed += OnFireButtonPressed;
             InputManager.instance.fireButtonReleased += OnFireButtonReleased;
+            _unit.unitDied += OnUnitDied;
         }
 
-        void OnDestroy() {
+        private void OnDestroy() {
             InputManager.instance.inputDirectionChanged -= OnInputDirectionChanged;
+            InputManager.instance.weaponSelected -= OnWeaponSelected;
             InputManager.instance.fireButtonPressed -= OnFireButtonPressed;
             InputManager.instance.fireButtonReleased -= OnFireButtonReleased;
+            _unit.unitDied -= OnUnitDied;
         }
 
-        void Update() {
+        private void Update() {
             if (_isShooting)
                 Shoot();
         }
 
-        void OnInputDirectionChanged(Vector3 direction) {
+        private void OnInputDirectionChanged(Vector3 direction) {
             _movementController.MoveAndRotate(direction, _speedMultiplyer);
         }
+        private void OnWeaponSelected(int weaponId) {
+            _weaponController.SelectWeapon(weaponId);
+        }
 
-        void OnFireButtonPressed() {
+        private void OnFireButtonPressed() {
             _isShooting = true;
         }
 
-        void OnFireButtonReleased() {
+        private void OnFireButtonReleased() {
             _isShooting = false;
             _weaponController.FireButtonReleased();
         }
 
-        void Shoot() {
+        private void OnUnitDied() {
+            
+        }
+
+
+        private void Shoot() {
             var aimSightPosition = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
             _weaponController.ShootWeapon(aimSightPosition);
         }
