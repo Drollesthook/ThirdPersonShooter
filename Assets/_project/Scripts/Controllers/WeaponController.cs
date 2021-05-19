@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Project.Units;
+using Project.Misc;
 using UnityEngine;
 
 namespace Project.Controllers {
@@ -23,7 +24,7 @@ namespace Project.Controllers {
             }
 
             if (weaponId < 0 || weaponId >= _weapons.Count) {
-                print("There is no " + weaponId + " weapon");
+                print("There is no " + weaponId + 1 + " weapon");
                 return;
             }
             _weapon = Instantiate(_weapons[weaponId], _weaponHolder);
@@ -33,7 +34,7 @@ namespace Project.Controllers {
         public void ShootWeapon(Vector3 shootDirection) {
             if(_weapon == null)
                 return;
-            _weapon.Shoot(_unit.unitIdentifier, shootDirection);
+            _weapon.Shoot(shootDirection);
         }
 
         public void FireButtonReleased() {

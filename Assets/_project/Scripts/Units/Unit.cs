@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Project.Interfaces;
+using Project.Misc;
 
 namespace Project.Units {
     public class Unit : MonoBehaviour, IHittable {
@@ -24,7 +25,11 @@ namespace Project.Units {
             _currentHPAmount = _maxHP;
         }
 
-        public void OnHit(int shooterId, int weaponId, float damage) {
+        public void OnHit(int shooterId, int shooterFractionId, int weaponId, float damage) {
+            if (shooterFractionId == _fractionIdentifier) {
+                print("WATCH YOUR FIRE! >_<");
+                return;
+            }
             if (_isDead) 
                 return;
             _lastShootersId = shooterId;

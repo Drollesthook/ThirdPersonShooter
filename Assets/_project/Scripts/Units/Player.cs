@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.Units {
     public class Player : MonoBehaviour {
-        [SerializeField] private float _speedMultiplyer = 1;
+        [SerializeField] private float _speedMultiplier = 1;
         
         private MovementController _movementController;
         private WeaponController _weaponController;
@@ -39,7 +39,7 @@ namespace Project.Units {
         }
 
         private void OnInputDirectionChanged(Vector3 direction) {
-            _movementController.MoveAndRotate(direction, _speedMultiplyer);
+            _movementController.MoveAndRotate(direction, _speedMultiplier);
         }
         private void OnWeaponSelected(int weaponId) {
             _weaponController.SelectWeapon(weaponId);
@@ -57,7 +57,6 @@ namespace Project.Units {
         private void OnUnitDied() {
             
         }
-
 
         private void Shoot() {
             var aimSightPosition = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);

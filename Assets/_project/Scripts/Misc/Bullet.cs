@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project {
+namespace Project.Misc {
     public class Bullet : MonoBehaviour {
         [SerializeField] private float _bulletSpeed = 20;
         [SerializeField] private float _timeToLive = 3f;

@@ -1,5 +1,5 @@
 ﻿namespace Project.Interfaces {
     public interface IHittable {
-        void OnHit(int shooterId, int weaponId, float damage);
+        void OnHit(int shooterId, int shootersFractionId, int weaponId, float damage);
     }
 }

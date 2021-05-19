@@ -39,13 +39,22 @@ namespace Project.Managers {
         }
 
         public Unit GetRandomBotByFractionId(int fractionId) {
-            return _listOfFractions[fractionId]
-                ._listOfBotUnits[Random.Range(0, _listOfFractions[fractionId]._listOfBotUnits.Count - 1)];
+            if (fractionId < _listOfFractions.Count)
+                return _listOfFractions[fractionId]
+                    ._listOfBotUnits[Random.Range(0, _listOfFractions[fractionId]._listOfBotUnits.Count)];
+
+            print("There is no spawn position for " + fractionId + " fractions bots");
+            return null;
+
         }
 
         public Unit GetRandomDummyByFractionId(int fractionId) {
+            if (fractionId < _listOfFractions.Count)
             return _listOfFractions[fractionId]
-                ._listOfDummyUnits[Random.Range(0, _listOfFractions[fractionId]._listOfDummyUnits.Count - 1)];
+                ._listOfDummyUnits[Random.Range(0, _listOfFractions[fractionId]._listOfDummyUnits.Count)];
+            
+            print("There is no spawn position for " + fractionId + " fractions dummies");
+            return null;
         }
     }
 }

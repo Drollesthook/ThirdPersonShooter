@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using Project.Interfaces;
 using Project.ScriptableObjects;
+using Project.Units;
 
-namespace Project {
+namespace Project.Misc {
     public class Weapon : MonoBehaviour {
         [SerializeField] private Bullet _bulletPrefab;
         [SerializeField] private CFGWeaponParameters _currentWeaponParameters;
@@ -15,6 +16,7 @@ namespace Project {
 
         private int _weaponId;
         private int _shooterId;
+        private int _shootersFractionId;
         private float _reloadTime;
         private float _shootCooldown;
         private float _shootDelay;
@@ -24,8 +26,12 @@ namespace Project {
         private float _spreadAngle;
         private float _weaponDamage;
         private CFGWeaponParameters.TypeOfFire _typeOfFire;
-
+        private Unit _myUnit;
+        
         private void Awake() {
+            _myUnit = GetComponentInParent<Unit>();
+            _shooterId = _myUnit.unitIdentifier;
+            _shootersFractionId = _myUnit.fractionIdentifier;
             _mainCamera = Camera.main;
             GetCurrentWeaponsParameters();
         }
@@ -38,11 +44,9 @@ namespace Project {
                 _isOnShootDelay = false;
         }
 
-        public void Shoot(int shooterId, Vector3 shootDirection) {
+        public void Shoot(Vector3 shootDirection) {
             if (_isOnShootDelay || _isWaitingOnRelease)
                 return;
-
-            _shooterId = shooterId;
             for (var i = 1; i <= _amountOfProjectilesPerShoot; i++) {
                 if (_shooterId == 0)
                     PlayerShooting(shootDirection);
@@ -74,7 +78,7 @@ namespace Project {
                 var hittable = hit.collider.GetComponent<IHittable>();
                 Debug.DrawRay(ray.origin, newRayDirection * _shootMaxDistance, Color.red);
                 if (hittable != null)
-                    hittable.OnHit(_shooterId, _weaponId, _weaponDamage);
+                    hittable.OnHit(_shooterId, _shootersFractionId, _weaponId, _weaponDamage);
             } else
                 bullet.SetFlyDirection(ray.direction * _shootMaxDistance + ray.origin);
         }
