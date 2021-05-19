@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project {
+namespace Project.ScriptableObjects {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapon")]
     public class CFGWeaponParameters : ScriptableObject {
 

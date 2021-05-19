@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Project {
+namespace Project.Controllers {
     public class MovementController : MonoBehaviour {
         [SerializeField] private float _playerSpeed = 6f;
         [SerializeField] private float _turnSmoothTime = 0.1f;

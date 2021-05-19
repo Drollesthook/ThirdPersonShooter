@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-
+using Project.Units;
 using UnityEngine;
 
-namespace Project {
+namespace Project.Controllers {
     public class WeaponController : MonoBehaviour {
         [SerializeField] private Transform _weaponHolder;
         [SerializeField] private List<Weapon> _weapons = new List<Weapon>();
@@ -13,7 +13,7 @@ namespace Project {
         private void Awake() {
             _weapon = GetComponentInChildren<Weapon>();
             _unit = GetComponent<Unit>();
-            if(_unit.identifier != 0 )
+            if(_unit.unitIdentifier != 0 )
                 SelectRandomWeapon();
         }
 
@@ -33,7 +33,7 @@ namespace Project {
         public void ShootWeapon(Vector3 shootDirection) {
             if(_weapon == null)
                 return;
-            _weapon.Shoot(_unit.identifier, shootDirection);
+            _weapon.Shoot(_unit.unitIdentifier, shootDirection);
         }
 
         public void FireButtonReleased() {

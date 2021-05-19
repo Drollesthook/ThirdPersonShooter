@@ -1,36 +1,41 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Project.Units;
 
 namespace Project.Managers {
     public class SpawnManager : MonoBehaviour {
-        [SerializeField] private List<SpawnPoint> _spawnPoints = new List<SpawnPoint>();
-        [SerializeField] private List<Enemy> _enemyPrefabs = new List<Enemy>();
-        [SerializeField] private Player _playerPrefab = default;
-        [SerializeField] private float _checkForSpawnTimer = 3f;
+        [SerializeField] private List<fractionsSpawnPos> _listOfFractionsSpawnPoses = new List<fractionsSpawnPos>();
+        
+        [Serializable]
+        public class fractionsSpawnPos {
+            public Transform _botsSpawnPointsParent;
+            public Transform _dummiesSpawnPointsParent;
+        }
 
         private void Awake() {
-            StartCoroutine(CheckForNeedToSpawnWithDelay());
+            SpawnUnits();
         }
 
-        private void CheckForNeedToSpawn() {
-            foreach (SpawnPoint spawnPoint in _spawnPoints) {
-                if (!spawnPoint.IsAvailableToSpawn) 
-                    continue;
-                Enemy enemy = Instantiate(GetRandomEnemyFromList(), spawnPoint.transform.position, Quaternion.identity);
-                enemy.SetSpawnPoint(spawnPoint);
-                spawnPoint.IsAvailableToSpawn = false;
-            }
+        void SpawnPlayer() {
+            
         }
 
-        private Enemy GetRandomEnemyFromList() {
-            return _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count - 1)];
-        }
+        void SpawnUnits() {
+            for (int i = 0; i < _listOfFractionsSpawnPoses.Count; i++) {
+                SpawnPoint[] spawnPoints = _listOfFractionsSpawnPoses[i]
+                                           ._botsSpawnPointsParent.GetComponentsInChildren<SpawnPoint>();
 
-        private IEnumerator CheckForNeedToSpawnWithDelay() {
-            while (true) {
-                CheckForNeedToSpawn();
-                yield return new WaitForSeconds(_checkForSpawnTimer);
+                foreach (SpawnPoint spawnPoint in spawnPoints) {
+                    spawnPoint.SpawnUnit(i,false);
+                }
+                spawnPoints = _listOfFractionsSpawnPoses[i]
+                                           ._dummiesSpawnPointsParent.GetComponentsInChildren<SpawnPoint>();
+
+                foreach (SpawnPoint spawnPoint in spawnPoints) {
+                    spawnPoint.SpawnUnit(i,true);
+                }
             }
         }
     }

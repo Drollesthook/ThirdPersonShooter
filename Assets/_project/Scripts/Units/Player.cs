@@ -1,8 +1,8 @@
 ﻿using Project.Managers;
-
+using Project.Controllers;
 using UnityEngine;
 
-namespace Project {
+namespace Project.Units {
     public class Player : MonoBehaviour {
         [SerializeField] private float _speedMultiplyer = 1;
         

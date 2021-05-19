@@ -1,20 +1,24 @@
 ﻿using System;
-
 using UnityEngine;
+using Project.Interfaces;
 
-namespace Project {
+namespace Project.Units {
     public class Unit : MonoBehaviour, IHittable {
         public event Action unitDied;
-        
-        [SerializeField] private int _identifier;
+
+        [SerializeField] private int _fractionIdentifier = default;
+        [SerializeField] private int _unitIdentifier = default;
         [SerializeField] private float _maxHP = 20;
+        
+        public int unitIdentifier => _unitIdentifier;
+        public int fractionIdentifier => _fractionIdentifier;
 
         private float _currentHPAmount;
         private int _lastShootersId;
         private int _lastWeaponsId;
         private bool _isDead;
+        private SpawnPoint _mySpawnPoint;
         
-        public int identifier => _identifier;
 
         private void Awake() {
             _currentHPAmount = _maxHP;
@@ -26,6 +30,10 @@ namespace Project {
             _lastShootersId = shooterId;
             _lastWeaponsId = weaponId;
             ImplementDamage(damage);
+        }
+        
+        public void SetSpawnPoint(SpawnPoint spawnPoint) {
+            _mySpawnPoint = spawnPoint;
         }
 
         private void ImplementDamage(float damage) {
@@ -40,8 +48,9 @@ namespace Project {
 
         private void Death() {
             _isDead = true;
+            _mySpawnPoint.UnitDied();
+            print(_lastShootersId + " killed " + _unitIdentifier + " using " + _lastWeaponsId);
             unitDied?.Invoke();
-            print(_lastShootersId + " killed " + _identifier + " using " + _lastWeaponsId);
         }
     }
 }

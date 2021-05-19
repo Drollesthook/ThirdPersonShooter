@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Project {
+namespace Project.Units {
     public class Enemy : MonoBehaviour {
         private Unit _unit;
-        private SpawnPoint _mySpawnPoint;
 
         private void Awake() {
             _unit = GetComponent<Unit>();
@@ -17,13 +16,7 @@ namespace Project {
             _unit.unitDied -= OnUnitDied;
         }
 
-        public void SetSpawnPoint(SpawnPoint spawnPoint) {
-            _mySpawnPoint = spawnPoint;
-        }
-
         private void OnUnitDied() {
-            if (_mySpawnPoint != null)
-                _mySpawnPoint.IsAvailableToSpawn = true;
             Destroy(gameObject);
         }
     }

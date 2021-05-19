@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 550797782988848960}
   - component: {fileID: 8970526813044043193}
   m_Layer: 0
-  m_Name: Dummy
+  m_Name: Dummy 2_01
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06c3990cf8266348a9843afd3b01d73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _identifier: 1
+  _fractionIdentifier: 1
+  _unitIdentifier: 2
   _maxHP: 20
 --- !u!114 &550797782988848963
 MonoBehaviour:

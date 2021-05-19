@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Project.Interfaces;
+using Project.ScriptableObjects;
 
 namespace Project {
     public class Weapon : MonoBehaviour {
