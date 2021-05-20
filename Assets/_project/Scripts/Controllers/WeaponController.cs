@@ -24,7 +24,7 @@ namespace Project.Controllers {
             }
 
             if (weaponId < 0 || weaponId >= _weapons.Count) {
-                print("There is no " + weaponId + 1 + " weapon");
+                Debug.LogWarning("There is no " + (weaponId + 1) + " weapon");
                 return;
             }
             _weapon = Instantiate(_weapons[weaponId], _weaponHolder);

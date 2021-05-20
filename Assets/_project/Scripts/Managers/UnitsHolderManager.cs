@@ -34,6 +34,17 @@ namespace Project.Managers {
             _spawnedUnits.Remove(unit);
         }
 
+        public Transform GetHostileUnitsTransformsByUnitId(int id) {
+            List<Unit> listOfHostileUnits = new List<Unit>();
+            foreach (Unit unit in _spawnedUnits) {
+                if (unit.fractionIdentifier == id)
+                    continue;
+                listOfHostileUnits.Add(unit);
+            }
+
+            return listOfHostileUnits.Count == 0 ? null : listOfHostileUnits[Random.Range(0, listOfHostileUnits.Count - 1)].transform;
+        }
+
         public Unit GetPlayerPrefab() {
             return _playerPrefab;
         }
@@ -43,7 +54,7 @@ namespace Project.Managers {
                 return _listOfFractions[fractionId]
                     ._listOfBotUnits[Random.Range(0, _listOfFractions[fractionId]._listOfBotUnits.Count)];
 
-            print("There is no spawn position for " + fractionId + " fractions bots");
+            Debug.LogError("There is no spawn position for " + fractionId + " fractions bots");
             return null;
 
         }
@@ -53,7 +64,7 @@ namespace Project.Managers {
             return _listOfFractions[fractionId]
                 ._listOfDummyUnits[Random.Range(0, _listOfFractions[fractionId]._listOfDummyUnits.Count)];
             
-            print("There is no spawn position for " + fractionId + " fractions dummies");
+            Debug.LogError("There is no spawn position for " + fractionId + " fractions dummies");
             return null;
         }
     }

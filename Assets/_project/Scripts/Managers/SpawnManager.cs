@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Project.Misc;
@@ -10,15 +9,16 @@ namespace Project.Managers {
     public class SpawnManager : MonoBehaviour {
         private static SpawnManager _instance;
         public event Action<Unit> PlayerSpawned;
-        [SerializeField] private Transform _playerSpawnPointsParent = default;
+        [SerializeField] private List<SpawnPoint> _playerSpawnPoints = new List<SpawnPoint>();
         [SerializeField] private List<fractionsSpawnPos> _listOfFractionsSpawnPoses = new List<fractionsSpawnPos>();
+        [SerializeField] private float _respawnTimer = 5f;
 
         public static SpawnManager instance => _instance;
         
         [Serializable]
         public class fractionsSpawnPos {
-            public Transform _botsSpawnPointsParent;
-            public Transform _dummiesSpawnPointsParent;
+            public List<SpawnPoint> _listOfBotsSpawnPoints = new List<SpawnPoint>();
+            public List<SpawnPoint> _listOfDummiesSpawnPoints = new List<SpawnPoint>();
         }
 
         
@@ -32,23 +32,16 @@ namespace Project.Managers {
         }
 
         public void SpawnPlayer() {
-            SpawnPoint[] spawnPoints = _playerSpawnPointsParent.GetComponentsInChildren<SpawnPoint>();
-            PlayerSpawned?.Invoke(spawnPoints[Random.Range(0, spawnPoints.Length - 1)].SpawnPlayer());
+            PlayerSpawned?.Invoke(_playerSpawnPoints[Random.Range(0, _playerSpawnPoints.Count - 1)].SpawnPlayer());
         }
 
         private void SpawnUnits() {
             for (int i = 0; i < _listOfFractionsSpawnPoses.Count; i++) {
-                SpawnPoint[] spawnPoints = _listOfFractionsSpawnPoses[i]
-                                           ._botsSpawnPointsParent.GetComponentsInChildren<SpawnPoint>();
-
-                foreach (SpawnPoint spawnPoint in spawnPoints) {
-                    spawnPoint.SpawnUnit(i,false);
+                foreach (SpawnPoint spawnPoint in _listOfFractionsSpawnPoses[i]._listOfBotsSpawnPoints) {
+                    spawnPoint.SpawnUnit(i,false, _respawnTimer);
                 }
-                spawnPoints = _listOfFractionsSpawnPoses[i]
-                                           ._dummiesSpawnPointsParent.GetComponentsInChildren<SpawnPoint>();
-
-                foreach (SpawnPoint spawnPoint in spawnPoints) {
-                    spawnPoint.SpawnUnit(i,true);
+                foreach (SpawnPoint spawnPoint in _listOfFractionsSpawnPoses[i]._listOfDummiesSpawnPoints) {
+                    spawnPoint.SpawnUnit(i,true, _respawnTimer);
                 }
             }
         }

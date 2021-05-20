@@ -27,7 +27,7 @@ namespace Project.Units {
 
         public void OnHit(int shooterId, int shooterFractionId, int weaponId, float damage) {
             if (shooterFractionId == _fractionIdentifier) {
-                print("WATCH YOUR FIRE! >_<");
+                Debug.LogWarning("WATCH YOUR FIRE! >_<");
                 return;
             }
             if (_isDead) 
@@ -54,7 +54,7 @@ namespace Project.Units {
         private void Death() {
             _isDead = true;
             _mySpawnPoint.UnitDied();
-            print(_lastShootersId + " killed " + _unitIdentifier + " using " + _lastWeaponsId);
+            Debug.Log(_lastShootersId + " killed " + _unitIdentifier + " using " + _lastWeaponsId);
             unitDied?.Invoke();
         }
     }

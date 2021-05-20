@@ -3,23 +3,21 @@
 namespace Project.Misc {
     public class Bullet : MonoBehaviour {
         [SerializeField] private float _bulletSpeed = 20;
-        [SerializeField] private float _timeToLive = 3f;
 
+        private float _timeToLive;
         private void Update() {
             Fly();
             CheckForDestroy();
         }
 
-        private void OnTriggerEnter(Collider other) {
-            Destroy(gameObject);
-        }
-
         public void SetFlyDirection(Vector3 direction) {
             transform.LookAt(direction);
+            float maxTravelDistance = Vector3.Distance(transform.position, direction);
+            _timeToLive = maxTravelDistance / _bulletSpeed;
         }
 
         private void Fly() {
-            transform.Translate(Vector3.forward * _bulletSpeed);
+            transform.Translate(Vector3.forward * _bulletSpeed * Time.deltaTime);
         }
 
         private void CheckForDestroy() {
