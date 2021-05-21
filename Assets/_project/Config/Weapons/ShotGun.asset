@@ -18,6 +18,6 @@ MonoBehaviour:
   _identifier: 3
   _reloadTime: 2
   _shootDelay: 0.65
-  _shootMaxDistance: 100
-  _spreadAngle: 1
+  _shootMaxDistance: 30
+  _spreadAngle: 5
   _typeOfFire: 0

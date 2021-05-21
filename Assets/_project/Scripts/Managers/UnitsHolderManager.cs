@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace Project.Managers {
     public class UnitsHolderManager : MonoBehaviour {
+        public event Action<int> unitSpawned; 
         private static UnitsHolderManager _instance;
         [SerializeField] private Unit _playerPrefab = default;
         [SerializeField] private List<fractionUnits> _listOfFractions = new List<fractionUnits>();
@@ -28,6 +29,7 @@ namespace Project.Managers {
 
         public void UnitSpawned(Unit unit) {
             _spawnedUnits.Add(unit);
+            unitSpawned?.Invoke(unit.fractionIdentifier);
         }
 
         public void UnitDied(Unit unit) {

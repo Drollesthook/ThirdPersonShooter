@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Project.Interfaces;
+using Project.Managers;
 using Project.Misc;
 
 namespace Project.Units {
@@ -54,6 +55,7 @@ namespace Project.Units {
         private void Death() {
             _isDead = true;
             _mySpawnPoint.UnitDied();
+            UnitsHolderManager.instance.UnitDied(this);
             Debug.Log(_lastShootersId + " killed " + _unitIdentifier + " using " + _lastWeaponsId);
             unitDied?.Invoke();
         }

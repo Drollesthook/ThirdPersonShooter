@@ -76,15 +76,24 @@ namespace Project.Misc {
             if (Physics.Raycast(ray.origin, newRayDirection, out hit, _shootMaxDistance)) {
                 bullet.SetFlyDirection(hit.point);
                 var hittable = hit.collider.GetComponent<IHittable>();
-                Debug.DrawRay(ray.origin, newRayDirection * _shootMaxDistance, Color.red);
                 if (hittable != null)
                     hittable.OnHit(_shooterId, _shootersFractionId, _weaponId, _weaponDamage);
             } else
-                bullet.SetFlyDirection(ray.direction * _shootMaxDistance + ray.origin);
+                bullet.SetFlyDirection(newRayDirection.normalized * _shootMaxDistance + ray.origin);
         }
 
         private void BotShooting(Vector3 shootDirection) {
-            
+            Vector3 newDirection = ApplySpreadToDirection(shootDirection - _firePoint.position);
+            newDirection.y = _firePoint.localPosition.y;
+            RaycastHit hit;
+            Bullet bullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
+            if (Physics.Raycast(_firePoint.position, newDirection, out hit, _shootMaxDistance)) {
+                bullet.SetFlyDirection(hit.point);
+                var hittable = hit.collider.GetComponent<IHittable>();
+                if (hittable != null)
+                    hittable.OnHit(_shooterId, _shootersFractionId, _weaponId, _weaponDamage);
+            } else
+                bullet.SetFlyDirection(newDirection.normalized * _shootMaxDistance + _firePoint.position);
         }
 
         private Vector3 ApplySpreadToDirection(Vector3 shootDirection) {
