@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 using Cinemachine;
 
+using Project.Controllers;
 using Project.Units;
 
 using UnityEngine;
 
 namespace Project.Managers {
     public class CameraManager : MonoBehaviour {
-        [SerializeField] private CinemachineFreeLook _camera = default;
+        [SerializeField] private CinemachineVirtualCamera _camera = default;
         
         private void Start() {
             SpawnManager.instance.PlayerSpawned += OnPlayerSpawned;
@@ -19,9 +20,10 @@ namespace Project.Managers {
             SpawnManager.instance.PlayerSpawned -= OnPlayerSpawned;
         }
 
-        void OnPlayerSpawned(Unit player) {
-            _camera.LookAt = player.transform;
-            _camera.Follow = player.transform;
+        void OnPlayerSpawned(Unit playerUnit) {
+            CameraFollowedTargetController followedTargetController = playerUnit.GetComponent<CameraFollowedTargetController>();
+            _camera.LookAt = followedTargetController.followTarget;
+            _camera.Follow = followedTargetController.followTarget;
         }
     }
 }

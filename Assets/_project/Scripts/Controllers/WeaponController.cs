@@ -43,6 +43,16 @@ namespace Project.Controllers {
                 return;
             _weapon.FireButtonReleased();
         }
+
+        public void HolsterWeapon() {
+            if(_weapon != null)
+                _weapon.gameObject.SetActive(false);
+        }
+
+        public void EquippWeapon() {
+            if(_weapon != null)
+                _weapon.gameObject.SetActive(true);
+        }
         
         private void SelectRandomWeapon() {
             if (_weapon != null) {

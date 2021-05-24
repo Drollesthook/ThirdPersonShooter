@@ -18,7 +18,7 @@ namespace Project.Controllers {
         }
 
         private void Update() {
-            Rotate();
+            //Rotate();
             WeaponHolderRotation();
         }
 

@@ -34,18 +34,18 @@ namespace Project.Units {
         }
 
         private void Update() {
-            if(_isFollowingTarget && !_isInCombat && !_isAwaiting)
-                CheckForDistanceReached();
+            if(_isFollowingTarget && !_isInCombat && !_isAwaiting && IsDistanceReached())
+                OnDistanceReached();
             if(_isInCombat)
                 LookAtTarget();
         }
 
         private void GetTargetAndMove() {
-            GetRandomTargetFromHolder();
+            GetRandomTargetFromUnitHolder();
             MoveToTarget();
         }
 
-        private void GetRandomTargetFromHolder() {
+        private void GetRandomTargetFromUnitHolder() {
             _myTarget = UnitsHolderManager.instance.GetHostileUnitsTransformsByUnitId(_unit.fractionIdentifier);
         }
 
@@ -58,24 +58,21 @@ namespace Project.Units {
 
             _navMeshAgent.SetDestination(_myTarget.position);
             _isFollowingTarget = true;
-            //_navMeshAgent.isStopped = true;
         }
 
         private void LookAtTarget() {
             transform.LookAt(_myTarget);
         }
 
-        private void SearchForTarget() {
+        private bool IsDistanceReached() {
+            return _navMeshAgent.remainingDistance != 0 && _navMeshAgent.remainingDistance < _shootDistance;
         }
 
-        private void CheckForDistanceReached() {
-            if (_navMeshAgent.remainingDistance == Mathf.Infinity && _navMeshAgent.remainingDistance > _shootDistance)
-                return;
-
+        private void OnDistanceReached() {
             _isFollowingTarget = false;
-            Debug.Log("I AM HERE");
-            if (_isTargetAlive()) {
-                if (_isTargetNearMe())
+            Debug.Log("I've Reached Distance");
+            if (IsTargetAlive()) {
+                if (IsTargetNearMe())
                     StartCoroutine(ShootWithDelay());
                 else
                     MoveToTarget();
@@ -85,11 +82,11 @@ namespace Project.Units {
             
         }
 
-        private bool _isTargetAlive() {
+        private bool IsTargetAlive() {
             return _myTarget != null;
         }
 
-        private bool _isTargetNearMe() {
+        private bool IsTargetNearMe() {
             return Vector3.Distance(transform.position, _myTarget.position) <= _shootDistance;
         }
 
@@ -112,10 +109,12 @@ namespace Project.Units {
         IEnumerator ShootWithDelay() {
             _isInCombat = true;
             while (_isInCombat) {
-                Shoot();
                 yield return new WaitForSeconds(_shootDelay);
-                if (_isTargetAlive() && _isTargetNearMe()) 
+                if (IsTargetAlive() && IsTargetNearMe()) {
+                    Shoot();
                     continue;
+                }
+
                 _isInCombat = false;
                 GetTargetAndMove();
             }
