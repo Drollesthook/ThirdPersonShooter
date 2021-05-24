@@ -59,6 +59,8 @@ namespace Project.Misc {
                 }
 
             }
+            _explodePS.transform.SetParent(null);
+            _explodePS.Play();
             Destroy(gameObject);
         }
 
