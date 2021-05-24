@@ -1,7 +1,7 @@
 ﻿using System;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 using Cursor = UnityEngine.Cursor;
 
@@ -25,7 +25,7 @@ namespace Project.Managers {
         [SerializeField] private FixedJoystick _moveJoystick;
         [SerializeField] private FixedJoystick _cameraJoystick;
         [SerializeField] private FixedJoystick _grenadeJoystick;
-        [SerializeField] private Button _shootButton;
+        [SerializeField] private Image _shootButton;
 
         public static InputManager instance => _instance;
 
@@ -51,7 +51,7 @@ namespace Project.Managers {
             _moveJoystick.gameObject.SetActive(true);
             _cameraJoystick.gameObject.SetActive(true);
             _grenadeJoystick.gameObject.SetActive(true);
-            //_shootButton.SetEnabled(true);
+            _shootButton.enabled = true;
         }
 
         private void Update() {
@@ -60,9 +60,14 @@ namespace Project.Managers {
             GetFireButtonState();
             GetGrenadeButtonState();
             SelectingWeapon();
-            // if (!_isInputGoingFromStick)
-            //     return;
-            //CameraMove();
+        }
+
+        public void ShootButtonPressed() {
+            fireButtonPressed?.Invoke();
+        }
+
+        public void ShootButtonReleased() {
+            fireButtonReleased?.Invoke();
         }
 
         private void CalculateMovementInputDirectionNormalized() {
@@ -110,6 +115,8 @@ namespace Project.Managers {
         }
 
         private void GetFireButtonState() {
+            if(_isInputGoingFromStick)
+                return;
             if(Input.GetMouseButtonDown(0))
                 fireButtonPressed?.Invoke();
             if(Input.GetMouseButtonUp(0))

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using Project.Interfaces;
+﻿using Project.Interfaces;
 
 using UnityEngine;
 

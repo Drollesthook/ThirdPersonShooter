@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using Project.Managers;
-using Project.Misc;
+﻿using Project.Misc;
 using Project.Units;
 
 using UnityEngine;
@@ -22,13 +18,6 @@ namespace Project.Controllers {
         private void Awake() {
             unit = GetComponent<Unit>();
             _lineRenderer.positionCount = _iterations;
-        }
-
-        private void Update() {
-            
-        }
-
-        private void OnDestroy() {
         }
         
         public void EquippGrenade() {

@@ -84,10 +84,6 @@ namespace Project.Units {
             _grenadeController.VisualizeAim(force);
         }
 
-        private void VisualizeGrenadeAim() {
-            
-        }
-
         private void OnUnitDied() {
             
         }

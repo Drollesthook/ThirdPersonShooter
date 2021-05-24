@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using Cinemachine;
+﻿using Cinemachine;
 
 using Project.Controllers;
 using Project.Units;
