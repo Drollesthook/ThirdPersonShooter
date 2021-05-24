@@ -69,6 +69,20 @@ namespace Project.Managers {
         public void ShootButtonReleased() {
             fireButtonReleased?.Invoke();
         }
+        
+        public void GrenadeEquipped() {
+            if(_isGrenadeEquipped)
+                return;
+            grenadeButtonPressed?.Invoke();
+            _isGrenadeEquipped = true;
+        }
+
+        public void GrenadeOut() {
+            if(!_isGrenadeEquipped)
+                return;
+            grenadeButtonReleased?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
+            _isGrenadeEquipped = false;
+        }
 
         private void CalculateMovementInputDirectionNormalized() {
             var direction = new Vector3(GetHorizontalMovementInput(), 0, GetVerticalMovementInput());
@@ -137,9 +151,7 @@ namespace Project.Managers {
         }
 
         private void GetGrenadeButtonState() {
-            if(_isInputGoingFromStick) 
-                GetGrenadeButtonStateByJoystick();
-            else 
+            if(!_isInputGoingFromStick)
                 GetGrenadeButtonStateByKeyboard();
             if(_isGrenadeEquipped)
                 GetGrenadeJoystickDirection();
@@ -163,15 +175,7 @@ namespace Project.Managers {
             }
         }
 
-        private void GrenadeEquipped() {
-            grenadeButtonPressed?.Invoke();
-            _isGrenadeEquipped = true;
-        }
-
-        private void GrenadeOut() {
-            grenadeButtonReleased?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
-            _isGrenadeEquipped = false;
-        }
+        
 
         private void GetGrenadeJoystickDirection() {
             if(!_isGrenadeEquipped)
