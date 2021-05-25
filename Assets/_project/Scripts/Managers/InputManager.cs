@@ -2,7 +2,7 @@
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.Runtime.InteropServices;
 using Cursor = UnityEngine.Cursor;
 
 namespace Project.Managers {
@@ -18,8 +18,9 @@ namespace Project.Managers {
         public event Action grenadeButtonPressed;
         public event Action<float> grenadeButtonReleased;
         
-        [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
         [SerializeField] private float _inputSensitivityThreshold;
+        [SerializeField] private float _joystickLookSensitivity = 2f;
+        [SerializeField] private float _mouseLookSensitivity = 200f;
         [SerializeField] private bool _isInputGoingFromStick;
         [SerializeField] private bool _isCameraInverted;
         [SerializeField] private FixedJoystick _moveJoystick;
@@ -32,26 +33,30 @@ namespace Project.Managers {
         private bool _isLeftHanded;
         private bool _isMovingCamera;
         private bool _isGrenadeEquipped;
-        private float _halfWidthOfScreen;
+        private float _halfScreenWidth;
+        private float _halfScreenHeight;
         private Vector3 _beginCameraInputMousePos;
         private Vector3 _currentCameraInputMousePos;
+        private float _grenadeEquippedPositionY;
         private float _lastGrenadeJoystickVerticalValue;
 
-
         private void Awake() {
-            _halfWidthOfScreen = Screen.width / 2f;
             _instance = this;
-            if (!_isInputGoingFromStick) {
-                _currentCameraInputMousePos = Input.mousePosition;
-                //Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+            if (!_isInputGoingFromStick)
                 return;
-            }
-
             _moveJoystick.gameObject.SetActive(true);
             _cameraJoystick.gameObject.SetActive(true);
             _grenadeJoystick.gameObject.SetActive(true);
             _shootButton.enabled = true;
+        }
+
+        private void Start() {
+            if (_isInputGoingFromStick)
+                return;
+            _halfScreenWidth = Screen.width * 0.5f;
+            _halfScreenHeight = Screen.height * 0.5f;
+            _currentCameraInputMousePos = Input.mousePosition;
+            Cursor.visible = false;
         }
 
         private void Update() {
@@ -99,20 +104,20 @@ namespace Project.Managers {
         }
 
         private void CalculateCameraInputDirection() {
+            Vector3 direction;
             if (_isInputGoingFromStick) {
-                Vector3 direction = new Vector3(_isCameraInverted? GetVerticalCameraInput(): -GetVerticalCameraInput(), GetHorizontalCameraInput(), 0);
-                if(direction.magnitude > _inputSensitivityThreshold)
-                inputCameraDirectionChanged?.Invoke(direction);
+                direction = new Vector3(_isCameraInverted? GetVerticalCameraInput(): -GetVerticalCameraInput(), GetHorizontalCameraInput(), 0);
             } else {
                 _beginCameraInputMousePos = _currentCameraInputMousePos;
                 _currentCameraInputMousePos = Input.mousePosition;
-                Vector3 direction = _currentCameraInputMousePos - _beginCameraInputMousePos;
-                direction.z = direction.y;
-                direction.y = direction.x;
+                direction = _currentCameraInputMousePos - _beginCameraInputMousePos;
+                direction.z = direction.y / _halfScreenHeight;
+                direction.y = direction.x / _halfScreenWidth;
                 direction.x = _isCameraInverted ? direction.z : -direction.z;
                 direction.z = 0;
-                inputCameraDirectionChanged?.Invoke(direction);
             }
+            //if(direction.magnitude > _inputSensitivityThreshold)
+            inputCameraDirectionChanged?.Invoke(direction * (_isInputGoingFromStick ? _joystickLookSensitivity : _mouseLookSensitivity));
         }
 
         private float GetHorizontalCameraInput() {
@@ -156,18 +161,10 @@ namespace Project.Managers {
             if(_isGrenadeEquipped)
                 GetGrenadeJoystickDirection();
         }
-
-        private void GetGrenadeButtonStateByJoystick() {
-            if (_grenadeJoystick.Direction.magnitude > 0 && !_isGrenadeEquipped) {
-                GrenadeEquipped();
-            }
-            if (_isGrenadeEquipped && Input.GetMouseButtonUp(0)) {
-                GrenadeOut();
-            }
-        }
         
         private void GetGrenadeButtonStateByKeyboard() {
             if (!_isGrenadeEquipped && Input.GetKeyDown(KeyCode.G)) {
+                _grenadeEquippedPositionY = Input.mousePosition.y;
                 GrenadeEquipped();
             }
             if (_isGrenadeEquipped && Input.GetMouseButtonDown(0)) {
@@ -181,12 +178,7 @@ namespace Project.Managers {
             if(!_isGrenadeEquipped)
                 return;
 
-            if (_isInputGoingFromStick) {
-                _lastGrenadeJoystickVerticalValue = _grenadeJoystick.Vertical;
-            } else {
-                // надо продумать как брать инпут с мышки, а пока среднее значение
-                _lastGrenadeJoystickVerticalValue = 0.5f;
-            }
+            _lastGrenadeJoystickVerticalValue = _isInputGoingFromStick ? _grenadeJoystick.Vertical : Mathf.Clamp((Input.mousePosition.y - _grenadeEquippedPositionY + _halfScreenHeight * 0.5f)/_halfScreenHeight, 0, 1);
             grenadeForceChanged?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
         }
     }

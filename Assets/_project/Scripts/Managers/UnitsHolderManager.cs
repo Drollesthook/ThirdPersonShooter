@@ -43,7 +43,6 @@ namespace Project.Managers {
                     continue;
                 listOfHostileUnits.Add(unit);
             }
-
             return listOfHostileUnits.Count == 0 ? null : listOfHostileUnits[Random.Range(0, listOfHostileUnits.Count - 1)].transform;
         }
 
@@ -52,7 +51,6 @@ namespace Project.Managers {
             for (int i = 0; i < unitsTransforms.Length; i++) {
                 unitsTransforms[i] = _spawnedUnits[i].transform;
             }
-
             return unitsTransforms;
         }
 

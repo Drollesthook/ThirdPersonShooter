@@ -66,7 +66,5 @@ namespace Project.Controllers {
             resultPos.y = sY;
             return resultPos;
         }
-
-        
     }
 }

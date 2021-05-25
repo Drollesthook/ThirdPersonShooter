@@ -3629,8 +3629,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d6ad23183da5e4bb381a7e65b51fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cinemachineFreeLook: {fileID: 0}
   _inputSensitivityThreshold: 0.1
+  _joystickLookSensitivity: 2
+  _mouseLookSensitivity: 200
   _isInputGoingFromStick: 0
   _isCameraInverted: 0
   _moveJoystick: {fileID: 1826132168}
