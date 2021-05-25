@@ -1,4 +1,7 @@
-﻿using Project.Interfaces;
+﻿using System.Collections.Generic;
+
+using Project.Interfaces;
+using Project.Managers;
 
 using UnityEngine;
 
@@ -45,14 +48,11 @@ namespace Project.Misc {
 
         private void Explode() {
             _isExploded = true;
-            Collider[] hittedColliders = Physics.OverlapSphere(transform.position, _explodeRadius);
-            foreach (Collider collider in hittedColliders) {
-                IHittable hittable = collider.GetComponent<IHittable>();
-                if (hittable != null) {
-                    if (IsHittableBehindTheWall(collider))
-                        continue;
-
-                    hittable.OnHit(_shooterId, _shooterFractionId, _grenadeId, _damage);
+            Transform[] unitsTransforms = UnitsHolderManager.instance.GetAllUnitsTransforms();
+            foreach (Transform tr in unitsTransforms) {
+                IHittable hittable = tr.GetComponent<IHittable>();
+                    if (IsHittableInExplosionRadius(tr) && !IsHittableBehindTheWall(tr)) {
+                        hittable.OnHit(_shooterId, _shooterFractionId, _grenadeId, _damage);
                 }
 
             }
@@ -61,9 +61,14 @@ namespace Project.Misc {
             Destroy(gameObject);
         }
 
-        private bool IsHittableBehindTheWall(Collider collider) {
-            return Physics.Raycast(transform.position, collider.transform.position, Vector3.Distance(transform.position, collider.transform.position), _wallMask);
-            //что-то не то
+        private bool IsHittableInExplosionRadius(Transform tr) {
+            return Vector3.Distance(tr.position, transform.position) < _explodeRadius;
+        }
+
+        private bool IsHittableBehindTheWall(Transform tr) {
+            RaycastHit hit;
+            bool result = Physics.Raycast(transform.position, tr.position - transform.position,out hit, Vector3.Distance(tr.position, transform.position),  _wallMask);
+            return result;
         }
 
         private void OnDrawGizmos() {

@@ -47,6 +47,15 @@ namespace Project.Managers {
             return listOfHostileUnits.Count == 0 ? null : listOfHostileUnits[Random.Range(0, listOfHostileUnits.Count - 1)].transform;
         }
 
+        public Transform[] GetAllUnitsTransforms() {
+            Transform[] unitsTransforms = new Transform[_spawnedUnits.Count];
+            for (int i = 0; i < unitsTransforms.Length; i++) {
+                unitsTransforms[i] = _spawnedUnits[i].transform;
+            }
+
+            return unitsTransforms;
+        }
+
         public Unit GetPlayerPrefab() {
             return _playerPrefab;
         }
