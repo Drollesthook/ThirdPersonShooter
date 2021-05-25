@@ -70,7 +70,6 @@ namespace Project.Units {
 
         private void OnDistanceReached() {
             _isFollowingTarget = false;
-            Debug.Log("I've Reached Distance");
             if (IsTargetAlive()) {
                 if (IsTargetNearMe())
                     StartCoroutine(ShootWithDelay());
@@ -118,12 +117,6 @@ namespace Project.Units {
                 _isInCombat = false;
                 GetTargetAndMove();
             }
-        }
-            // добавить missOffset, чтобы не стрелял чётко в цель,также в зависимости от оружия время нажатия на спуск после которого отжатие
-        //joggle
-            //двигаться влево вправо разными интервалами (и скоростью) имитировать попытку увернутсья от пуль врага
-            
-            
-        
+        } 
     }
 }

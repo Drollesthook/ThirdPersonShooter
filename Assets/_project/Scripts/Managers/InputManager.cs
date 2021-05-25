@@ -96,10 +96,14 @@ namespace Project.Managers {
             _isGrenadeEquipped = false;
         }
 
+        public void SelectWeaponById(int weaponID) {
+            weaponSelected?.Invoke(weaponID);
+        }
+
         private void OnGamePlayStarted() {
             _isGamePlayStarted = true;
             _currentCameraInputMousePos = Input.mousePosition;
-            Cursor.visible = false;
+            if(!_isInputGoingFromStick) Cursor.visible = false;
         }
 
         private void OnPlayerDied() {
@@ -110,7 +114,7 @@ namespace Project.Managers {
         private void OnPlayerRespawned() {
             _isGamePlayStarted = true;
             _currentCameraInputMousePos = Input.mousePosition;
-            Cursor.visible = false;
+            if(!_isInputGoingFromStick) Cursor.visible = false;
         }
 
         private void CalculateMovementInputDirectionNormalized() {
@@ -140,7 +144,6 @@ namespace Project.Managers {
                 direction.x = _isCameraInverted ? direction.z : -direction.z;
                 direction.z = 0;
             }
-            //if(direction.magnitude > _inputSensitivityThreshold)
             inputCameraDirectionChanged?.Invoke(direction * (_isInputGoingFromStick ? _joystickLookSensitivity : _mouseLookSensitivity));
         }
 
@@ -167,6 +170,8 @@ namespace Project.Managers {
         }
 
         private void SelectingWeapon() {
+            if(_isInputGoingFromStick)
+                return;
             if(Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
                 weaponSelected?.Invoke(0);
             if(Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
