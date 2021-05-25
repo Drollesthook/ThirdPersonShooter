@@ -85,7 +85,7 @@ namespace Project.Units {
         }
 
         private void OnUnitDied() {
-            
+            Destroy(gameObject);
         }
 
         private void Shoot() {

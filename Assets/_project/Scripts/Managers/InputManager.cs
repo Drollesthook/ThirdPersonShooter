@@ -1,8 +1,6 @@
 ﻿using System;
-using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Runtime.InteropServices;
 using Cursor = UnityEngine.Cursor;
 
 namespace Project.Managers {
@@ -33,6 +31,7 @@ namespace Project.Managers {
         private bool _isLeftHanded;
         private bool _isMovingCamera;
         private bool _isGrenadeEquipped;
+        private bool _isGamePlayStarted;
         private float _halfScreenWidth;
         private float _halfScreenHeight;
         private Vector3 _beginCameraInputMousePos;
@@ -42,24 +41,32 @@ namespace Project.Managers {
 
         private void Awake() {
             _instance = this;
-            if (!_isInputGoingFromStick)
-                return;
-            _moveJoystick.gameObject.SetActive(true);
-            _cameraJoystick.gameObject.SetActive(true);
-            _grenadeJoystick.gameObject.SetActive(true);
-            _shootButton.enabled = true;
         }
 
         private void Start() {
-            if (_isInputGoingFromStick)
+            GameManager.instance.gamePlayStarted += OnGamePlayStarted;
+            GameManager.instance.playerDied += OnPlayerDied;
+            GameManager.instance.playerRespawned += OnPlayerRespawned;
+            if (_isInputGoingFromStick) {
+                _moveJoystick.gameObject.SetActive(true);
+                _cameraJoystick.gameObject.SetActive(true);
+                _grenadeJoystick.gameObject.SetActive(true);
+                _shootButton.enabled = true;
                 return;
+            }
             _halfScreenWidth = Screen.width * 0.5f;
             _halfScreenHeight = Screen.height * 0.5f;
-            _currentCameraInputMousePos = Input.mousePosition;
-            Cursor.visible = false;
+        }
+
+        private void OnDestroy() {
+            GameManager.instance.gamePlayStarted -= OnGamePlayStarted;
+            GameManager.instance.playerDied -= OnPlayerDied;
+            GameManager.instance.playerRespawned -= OnPlayerRespawned;
         }
 
         private void Update() {
+            if(!_isGamePlayStarted)
+                return;
             CalculateMovementInputDirectionNormalized();
             CalculateCameraInputDirection();
             GetFireButtonState();
@@ -87,6 +94,23 @@ namespace Project.Managers {
                 return;
             grenadeButtonReleased?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
             _isGrenadeEquipped = false;
+        }
+
+        private void OnGamePlayStarted() {
+            _isGamePlayStarted = true;
+            _currentCameraInputMousePos = Input.mousePosition;
+            Cursor.visible = false;
+        }
+
+        private void OnPlayerDied() {
+            _isGamePlayStarted = false;
+            Cursor.visible = true;
+        }
+
+        private void OnPlayerRespawned() {
+            _isGamePlayStarted = true;
+            _currentCameraInputMousePos = Input.mousePosition;
+            Cursor.visible = false;
         }
 
         private void CalculateMovementInputDirectionNormalized() {
@@ -167,7 +191,7 @@ namespace Project.Managers {
                 _grenadeEquippedPositionY = Input.mousePosition.y;
                 GrenadeEquipped();
             }
-            if (_isGrenadeEquipped && Input.GetMouseButtonDown(0)) {
+            if (_isGrenadeEquipped && Input.GetKeyUp(KeyCode.G)) {
                 GrenadeOut();
             }
         }
@@ -178,7 +202,8 @@ namespace Project.Managers {
             if(!_isGrenadeEquipped)
                 return;
 
-            _lastGrenadeJoystickVerticalValue = _isInputGoingFromStick ? _grenadeJoystick.Vertical : Mathf.Clamp((Input.mousePosition.y - _grenadeEquippedPositionY + _halfScreenHeight * 0.5f)/_halfScreenHeight, 0, 1);
+            _lastGrenadeJoystickVerticalValue = _isInputGoingFromStick ? _grenadeJoystick.Vertical :
+                                                    Mathf.Clamp((Input.mousePosition.y - _grenadeEquippedPositionY + _halfScreenHeight * 0.5f)/_halfScreenHeight, 0, 1);
             grenadeForceChanged?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
         }
     }

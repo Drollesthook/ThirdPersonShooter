@@ -27,12 +27,26 @@ namespace Project.Managers {
         }
 
         private void Start() {
+            GameManager.instance.gamePlayStarted += OnGamePlayStarted;
+            GameManager.instance.playerRespawned += OnPlayerRespawned;
+        }
+
+        private void OnDestroy() {
+            GameManager.instance.gamePlayStarted -= OnGamePlayStarted;
+            GameManager.instance.playerRespawned -= OnPlayerRespawned;
+        }
+
+        void SpawnPlayer() {
+            PlayerSpawned?.Invoke(_playerSpawnPoints[Random.Range(0, _playerSpawnPoints.Count - 1)].SpawnPlayer());
+        }
+
+        private void OnGamePlayStarted() {
             SpawnPlayer();
             SpawnUnits();
         }
 
-        public void SpawnPlayer() {
-            PlayerSpawned?.Invoke(_playerSpawnPoints[Random.Range(0, _playerSpawnPoints.Count - 1)].SpawnPlayer());
+        private void OnPlayerRespawned() {
+            SpawnPlayer();
         }
 
         private void SpawnUnits() {

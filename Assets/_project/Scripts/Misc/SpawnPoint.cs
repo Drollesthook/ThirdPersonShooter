@@ -36,7 +36,7 @@ namespace Project.Misc {
 
         public void UnitDied() {
             if (_isMyUnitPlayer)
-                print("gonna notify GameManager about that");
+                GameManager.instance.PlayerDeath();
             else {
                 StartCoroutine(SpawnUnitWithDelay());
             }
