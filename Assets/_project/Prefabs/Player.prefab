@@ -183,7 +183,11 @@ MonoBehaviour:
   _maxThrowForce: 10
   _defaultDirection: {x: 0, y: 1, z: 1}
   _lineRenderer: {fileID: 1664277139}
+  _maxLineRendererLength: 3
   _iterations: 20
+  _grenadeCollisionsMask:
+    serializedVersion: 2
+    m_Bits: 311
 --- !u!120 &1664277139
 LineRenderer:
   m_ObjectHideFlags: 0
