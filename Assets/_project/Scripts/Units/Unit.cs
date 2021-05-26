@@ -7,6 +7,7 @@ using Project.Misc;
 namespace Project.Units {
     public class Unit : MonoBehaviour, IHittable {
         public event Action unitDied;
+        public event Action<float> hPAmountChanged;
 
         [SerializeField] private int _fractionIdentifier = default;
         [SerializeField] private int _unitIdentifier = default;
@@ -44,6 +45,7 @@ namespace Project.Units {
 
         private void ImplementDamage(float damage) {
             _currentHPAmount -= damage;
+            hPAmountChanged?.Invoke(_currentHPAmount/_maxHP);
             CheckHPAmount();
         }
 

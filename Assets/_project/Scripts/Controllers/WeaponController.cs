@@ -15,8 +15,7 @@ namespace Project.Controllers {
             _weapon = GetComponentInChildren<Weapon>();
             _unit = GetComponent<Unit>();
             if(_unit.unitIdentifier != 0 )
-                SelectWeapon(2);
-                //SelectRandomWeapon();
+                SelectRandomWeapon();
         }
 
         public void SelectWeapon(int weaponId) {
