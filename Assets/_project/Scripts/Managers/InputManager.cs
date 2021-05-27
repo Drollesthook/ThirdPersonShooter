@@ -92,7 +92,7 @@ namespace Project.Managers {
         public void GrenadeOut() {
             if(!_isGrenadeEquipped)
                 return;
-            grenadeButtonReleased?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
+            grenadeButtonReleased?.Invoke(Mathf.Abs(_lastGrenadeJoystickVerticalValue));
             _isGrenadeEquipped = false;
         }
 
@@ -209,7 +209,7 @@ namespace Project.Managers {
 
             _lastGrenadeJoystickVerticalValue = _isInputGoingFromStick ? _grenadeJoystick.Vertical :
                                                     Mathf.Clamp((Input.mousePosition.y - _grenadeEquippedPositionY + _halfScreenHeight * 0.5f)/_halfScreenHeight, 0, 1);
-            grenadeForceChanged?.Invoke(_lastGrenadeJoystickVerticalValue < 0 ? -_lastGrenadeJoystickVerticalValue : _lastGrenadeJoystickVerticalValue);
+            grenadeForceChanged?.Invoke(Mathf.Abs(_lastGrenadeJoystickVerticalValue));
         }
     }
 }
