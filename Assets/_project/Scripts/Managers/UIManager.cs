@@ -5,11 +5,13 @@ namespace Project.Managers {
         [SerializeField] private GameObject _gamePlayUI = default;
         [SerializeField] private GameObject _mainMenuUI = default;
         [SerializeField] private GameObject _deathScreenUI = default;
+        [SerializeField] private GameObject _SettingsMenuUI = default;
 
         private void Start() {
             _deathScreenUI.SetActive(false);
             _gamePlayUI.SetActive(false);
             _mainMenuUI.SetActive(true);
+            _SettingsMenuUI.SetActive(false);
             GameManager.instance.gamePlayStarted += OnGamePlayStarted;
             GameManager.instance.playerDied += OnPlayerDied;
             GameManager.instance.playerRespawned += OnPlayerRespawned;

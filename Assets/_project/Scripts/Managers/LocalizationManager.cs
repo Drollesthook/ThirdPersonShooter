@@ -6,7 +6,12 @@ using UnityEngine;
 
 namespace Project.Managers {
     public class LocalizationManager : MonoBehaviour {
-        public event Action localizationLoaded; 
+        public event Action localizationLoaded;
+
+        public enum LocalizationLanguage {
+            English,
+            Russian
+        }
         
         private static LocalizationManager _instance;
         
@@ -25,6 +30,8 @@ namespace Project.Managers {
             public string weapon_2;
             public string menu_play;
             public string menu_respawn;
+            public string menu_settings;
+            public string menu_settings_language;
         }
 
         private class LocalizationData {
@@ -42,16 +49,34 @@ namespace Project.Managers {
             LoadCurrentLocalizationInDictionary(_currentLocalizationData.ru_localization);
         }
 
+        public void ChooseLocalization(int language_id) {
+            switch (language_id) {
+                case 1:
+                    LoadCurrentLocalizationInDictionary(_currentLocalizationData.en_localization);
+                    break;
+                case 2:
+                    LoadCurrentLocalizationInDictionary(_currentLocalizationData.ru_localization);
+                    break;
+                default:
+                    LoadCurrentLocalizationInDictionary(_currentLocalizationData.en_localization);
+                    Debug.LogWarning("Required Language doesn't exist in this game");
+                    break;
+            }
+        }
+
         public string GetLocalizationTextByKey(string key) {
             return _currentLocalizationDictionary[key];
         }
 
         private void LoadCurrentLocalizationInDictionary(Localization localization) {
+            _currentLocalizationDictionary.Clear();
             _currentLocalizationDictionary.Add("weapon_0", localization.weapon_0);
             _currentLocalizationDictionary.Add("weapon_1", localization.weapon_1);
             _currentLocalizationDictionary.Add("weapon_2", localization.weapon_2);
             _currentLocalizationDictionary.Add("menu_play", localization.menu_play);
             _currentLocalizationDictionary.Add("menu_respawn", localization.menu_respawn);
+            _currentLocalizationDictionary.Add("menu_settings", localization.menu_settings);
+            _currentLocalizationDictionary.Add("menu_settings_language", localization.menu_settings_language);
             localizationLoaded?.Invoke();
         }
     }

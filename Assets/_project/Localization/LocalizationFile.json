@@ -3,14 +3,18 @@
         "weapon_0" : "Rifle",
         "weapon_1" : "Pistol",
         "weapon_2" : "Shotgun",
-        "menu_play" : "Play",
-        "menu_respawn" : "respawn"
+        "menu_play" : "PLAY",
+        "menu_respawn" : "RESPAWN",
+        "menu_settings" : "settings",
+        "menu_settings_language" : "language"
     },
     "ru_localization" : {
         "weapon_0" : "Автомат",
         "weapon_1" : "Пистолет",
         "weapon_2" : "Дробовик",
-        "menu_play" : "Играть",
-        "menu_respawn" : "возродиться"
+        "menu_play" : "ИГРАТЬ",
+        "menu_respawn" : "ВОЗРОЖДЕНИЕ",
+        "menu_settings" : "настройки",
+        "menu_settings_language" : "язык"
     }
 }

@@ -20,6 +20,8 @@ namespace Project.Controllers {
 
         private void Start() {
             LocalizationManager.instance.localizationLoaded += OnLocalizationLoaded;
+            GetLocalizationText();
+            SetLocalizationText();
         }
 
         private void OnDestroy() {
