@@ -295,6 +295,8 @@ MonoBehaviour:
   _hpBar: {fileID: 5173172698670346883}
   _secondHpBar: {fileID: 6557607733229100892}
   _secondBarChangeDelay: 0.4
+  _allyColor: {r: 0.17007832, g: 0.735849, b: 0.19487007, a: 1}
+  _hostileColor: {r: 0.78431374, g: 0.15686275, b: 0.15686275, a: 1}
 --- !u!1 &550797783122092729
 GameObject:
   m_ObjectHideFlags: 0

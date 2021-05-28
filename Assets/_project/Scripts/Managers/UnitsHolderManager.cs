@@ -21,10 +21,15 @@ namespace Project.Managers {
             public List<Unit> _listOfDummyUnits = new List<Unit>();
         }
         public static UnitsHolderManager instance => _instance;
+
+        public int playerFractionId => _playerFractionId;
+
         private List<Unit> _spawnedUnits = new List<Unit>();
+        private int _playerFractionId;
 
         private void Awake() {
             _instance = this;
+            _playerFractionId = _playerPrefab.fractionIdentifier;
         }
 
         public void UnitSpawned(Unit unit) {

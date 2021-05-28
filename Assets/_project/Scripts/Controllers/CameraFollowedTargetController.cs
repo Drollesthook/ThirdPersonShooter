@@ -30,7 +30,7 @@ namespace Project.Controllers {
             angles.z = 0;
             angles.y = 0;
             float angle = angles.x;
-            angle = angle > 180 ? Mathf.Clamp(angles.x, 320, 360) : Mathf.Clamp(angles.x, 0, 40);
+            angle = angle > 180 ? Mathf.Clamp(angles.x, 350, 360) : Mathf.Clamp(angles.x, 0, 10);
             angles.x = angle;
             _followTarget.localRotation = Quaternion.Euler(angles);
         }

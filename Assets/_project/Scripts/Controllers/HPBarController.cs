@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using DG.Tweening;
 
+using Project.Managers;
 using Project.Units;
 
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.UI;
 
 namespace Project.Controllers {
@@ -12,6 +14,8 @@ public class HPBarController : MonoBehaviour {
     [SerializeField] private Image _hpBar = default;
     [SerializeField] private Image _secondHpBar = default;
     [SerializeField] private float _secondBarChangeDelay = 0.4f;
+    [SerializeField] private Color _allyColor = default;
+    [SerializeField] private Color _hostileColor = default;
 
     private Coroutine _hideBarWithDelay;
     private Transform _mainCamera;
@@ -24,6 +28,7 @@ public class HPBarController : MonoBehaviour {
 
     private void Start() {
         _myUnit.hPAmountChanged += OnHpAmountChanged;
+        SetHPBarColor();
     }
 
     private void LateUpdate()
@@ -34,6 +39,10 @@ public class HPBarController : MonoBehaviour {
     private void OnDestroy() {
         DOTween.Kill(_secondHpBar);
         _myUnit.hPAmountChanged -= OnHpAmountChanged;
+    }
+
+    private void SetHPBarColor() {
+        _hpBar.color = _myUnit.fractionIdentifier == UnitsHolderManager.instance.playerFractionId ? _allyColor : _hostileColor;
     }
 
     private void OnHpAmountChanged(float hpPercent) {

@@ -6,22 +6,16 @@ using UnityEngine;
 
 namespace Project.Managers {
     public class LocalizationManager : MonoBehaviour {
-        public event Action localizationLoaded;
-
-        public enum LocalizationLanguage {
-            English,
-            Russian
-        }
-        
         private static LocalizationManager _instance;
+        public event Action localizationLoaded;
         
         [SerializeField] private LocalizationData _currentLocalizationData;
 
         public static LocalizationManager instance => _instance;
-
-        private Localization _current_en_localization;
-        private Localization _current_ru_localization;
+        
         private Dictionary<string,string> _currentLocalizationDictionary = new Dictionary<string, string>();
+        private const string CURRENT_LANGUAGE = "current_language";
+        private int _currentLanguageID;
 
         [Serializable]
         private class Localization {
@@ -41,16 +35,18 @@ namespace Project.Managers {
 
         private void Awake() {
             _instance = this;
+            _currentLanguageID = PlayerPrefs.GetInt(CURRENT_LANGUAGE, 1);
         }
 
         private void Start() {
             string json = File.ReadAllText(Application.dataPath + "/_project/Localization/LocalizationFile.json");
             _currentLocalizationData = JsonUtility.FromJson<LocalizationData>(json);
-            LoadCurrentLocalizationInDictionary(_currentLocalizationData.ru_localization);
+            ChooseLocalization(_currentLanguageID);
         }
 
         public void ChooseLocalization(int language_id) {
-            switch (language_id) {
+            _currentLanguageID = language_id;
+            switch (_currentLanguageID) {
                 case 1:
                     LoadCurrentLocalizationInDictionary(_currentLocalizationData.en_localization);
                     break;
@@ -62,6 +58,7 @@ namespace Project.Managers {
                     Debug.LogWarning("Required Language doesn't exist in this game");
                     break;
             }
+            PlayerPrefs.SetInt(CURRENT_LANGUAGE, _currentLanguageID);
         }
 
         public string GetLocalizationTextByKey(string key) {
