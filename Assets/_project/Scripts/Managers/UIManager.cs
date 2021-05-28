@@ -41,12 +41,12 @@ namespace Project.Managers {
             _playersFractionId = UnitsHolderManager.instance.playerFractionId;
         }
 
-        public void UnitDied(int killersId, int weaponsId, int deadGuyId) {
+        public void UnitDied(int killersId, int weaponsId, int deadGuyId, int fractionId) {
             KillInfoController newKillInfo = Instantiate(_killInfoPrefab, _killEventsMenuUI.transform);
             string killer = IdsInfoManager.instance.GetUnitsNameById(killersId);
             string weapon = IdsInfoManager.instance.GetWeaponNameById(weaponsId);
             string deadGuy = IdsInfoManager.instance.GetUnitsNameById(deadGuyId);
-            newKillInfo.SetText(killer,weapon,deadGuy, deadGuyId == _playersFractionId);
+            newKillInfo.SetText(killer,weapon,deadGuy, fractionId == _playersFractionId);
         }
         
 

@@ -57,7 +57,7 @@ namespace Project.Units {
         private void Death() {
             _isDead = true;
             _mySpawnPoint.UnitDied();
-            UIManager.instance.UnitDied(_lastShootersId, _lastWeaponsId, _unitIdentifier);
+            UIManager.instance.UnitDied(_lastShootersId, _lastWeaponsId, _unitIdentifier, _fractionIdentifier);
             UnitsHolderManager.instance.UnitDied(this);
             unitDied?.Invoke();
         }
