@@ -3,18 +3,24 @@
         "weapon_0" : "Rifle",
         "weapon_1" : "Pistol",
         "weapon_2" : "Shotgun",
+        "weapon_3" : "Grenade",
         "menu_play" : "PLAY",
         "menu_respawn" : "RESPAWN",
         "menu_settings" : "settings",
-        "menu_settings_language" : "language"
+        "menu_settings_language" : "language",
+        "killinfo_killed" : "kill",
+        "killinfo_using" : "using"
     },
     "ru_localization" : {
         "weapon_0" : "Автомат",
         "weapon_1" : "Пистолет",
         "weapon_2" : "Дробовик",
+        "weapon_3" : "Гранату",
         "menu_play" : "ИГРАТЬ",
         "menu_respawn" : "ВОЗРОЖДЕНИЕ",
         "menu_settings" : "настройки",
-        "menu_settings_language" : "язык"
+        "menu_settings_language" : "язык",
+        "killinfo_killed" : "убил",
+        "killinfo_using" : "используя"
     }
 }

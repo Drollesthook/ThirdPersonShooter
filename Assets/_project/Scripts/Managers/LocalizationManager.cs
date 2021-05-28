@@ -22,10 +22,13 @@ namespace Project.Managers {
             public string weapon_0;
             public string weapon_1;
             public string weapon_2;
+            public string weapon_3;
             public string menu_play;
             public string menu_respawn;
             public string menu_settings;
             public string menu_settings_language;
+            public string killinfo_killed;
+            public string killinfo_using;
         }
 
         private class LocalizationData {
@@ -70,10 +73,13 @@ namespace Project.Managers {
             _currentLocalizationDictionary.Add("weapon_0", localization.weapon_0);
             _currentLocalizationDictionary.Add("weapon_1", localization.weapon_1);
             _currentLocalizationDictionary.Add("weapon_2", localization.weapon_2);
+            _currentLocalizationDictionary.Add("weapon_3", localization.weapon_3);
             _currentLocalizationDictionary.Add("menu_play", localization.menu_play);
             _currentLocalizationDictionary.Add("menu_respawn", localization.menu_respawn);
             _currentLocalizationDictionary.Add("menu_settings", localization.menu_settings);
             _currentLocalizationDictionary.Add("menu_settings_language", localization.menu_settings_language);
+            _currentLocalizationDictionary.Add("killinfo_killed", localization.killinfo_killed);
+            _currentLocalizationDictionary.Add("killinfo_using", localization.killinfo_using);
             localizationLoaded?.Invoke();
         }
     }

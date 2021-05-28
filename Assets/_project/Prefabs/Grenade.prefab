@@ -143,7 +143,7 @@ MonoBehaviour:
   _explodeDelay: 3
   _explodeRadius: 5
   _damage: 30
-  _grenadeId: 6
+  _grenadeId: 3
   _explodePS: {fileID: 5068189022971465139}
   _wallMask:
     serializedVersion: 2

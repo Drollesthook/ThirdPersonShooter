@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shootDistance: 5
-  _shootDelay: 2
+  _shootDelay: 0.5
 --- !u!114 &8990125426754058536
 MonoBehaviour:
   m_ObjectHideFlags: 0

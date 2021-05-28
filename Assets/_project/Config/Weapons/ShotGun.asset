@@ -15,7 +15,7 @@ MonoBehaviour:
   _amountOfBulletsInClip: 8
   _amountOfProjectilesPerShot: 5
   _damage: 4
-  _identifier: 3
+  _identifier: 2
   _reloadTime: 2
   _shootDelay: 0.65
   _shootMaxDistance: 30

@@ -32,6 +32,7 @@ namespace Project.Managers {
         private bool _isMovingCamera;
         private bool _isGrenadeEquipped;
         private bool _isGamePlayStarted;
+        private bool _isWeaponSelected;
         private float _halfScreenWidth;
         private float _halfScreenHeight;
         private Vector3 _beginCameraInputMousePos;
@@ -71,6 +72,8 @@ namespace Project.Managers {
             CalculateCameraInputDirection();
             GetFireButtonState();
             GetGrenadeButtonState();
+            if(_isWeaponSelected)
+                return;
             SelectingWeapon();
         }
 
@@ -97,10 +100,13 @@ namespace Project.Managers {
         }
 
         public void SelectWeaponById(int weaponID) {
-            weaponSelected?.Invoke(weaponID);
+            if(_isWeaponSelected)
+                return;
+            SelectWeapon(weaponID);
         }
 
         private void OnGamePlayStarted() {
+            _isWeaponSelected = false;
             _isGamePlayStarted = true;
             _currentCameraInputMousePos = Input.mousePosition;
             if(!_isInputGoingFromStick) Cursor.visible = false;
@@ -113,6 +119,7 @@ namespace Project.Managers {
 
         private void OnPlayerRespawned() {
             _isGamePlayStarted = true;
+            _isWeaponSelected = false;
             _currentCameraInputMousePos = Input.mousePosition;
             if(!_isInputGoingFromStick) Cursor.visible = false;
         }
@@ -173,15 +180,20 @@ namespace Project.Managers {
             if(_isInputGoingFromStick)
                 return;
             if(Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
-                weaponSelected?.Invoke(0);
+                SelectWeapon(0);
             if(Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
-                weaponSelected?.Invoke(1);
+                SelectWeapon(1);
             if(Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
-                weaponSelected?.Invoke(2);
+                SelectWeapon(2);
             if(Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
-                weaponSelected?.Invoke(3);
+                SelectWeapon(3);
             if(Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
-                weaponSelected?.Invoke(4);
+                SelectWeapon(4);
+        }
+
+        private void SelectWeapon(int id) {
+            _isWeaponSelected = true;
+            weaponSelected?.Invoke(id);
         }
 
         private void GetGrenadeButtonState() {
