@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 1868339409831956838, guid: 9ba70287958e4f544af8a355bf513076,
     type: 3}
-  _listOfFractions:
+  _listOfFractionsUnitsPrefabs:
   - _listOfBotUnits:
     - {fileID: 2013525115818641264, guid: 0076977530988e64a878ab2ff9d3ee3e, type: 3}
     _listOfDummyUnits:

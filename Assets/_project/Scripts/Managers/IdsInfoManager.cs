@@ -18,6 +18,7 @@ namespace Project.Managers {
         }
 
         private void Start() {
+            OnLocalizationLoaded();
             LocalizationManager.instance.localizationLoaded += OnLocalizationLoaded;
         }
 
@@ -26,15 +27,15 @@ namespace Project.Managers {
         }
 
         public string GetUnitsNameById(int id) {
-            return _listOfUnits[id];
+            return id >= _listOfUnits.Count ? "NoName" : _listOfUnits[id];
         }
         
         public string GetWeaponNameById(int id) {
-            return _listOfWeapons[id];
+            return id >= _listOfWeapons.Count ? "NoName" : _listOfWeapons[id];
         }
         
         public string GetFractionNameById(int id) {
-            return _listOfFractions[id];
+            return id >= _listOfFractions.Count ? "NoName" : _listOfFractions[id];
         }
 
         private void OnLocalizationLoaded() {

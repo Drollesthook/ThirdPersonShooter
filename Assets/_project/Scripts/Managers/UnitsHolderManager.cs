@@ -13,18 +13,23 @@ namespace Project.Managers {
         public event Action<int> unitSpawned; 
         private static UnitsHolderManager _instance;
         [SerializeField] private Unit _playerPrefab = default;
-        [SerializeField] private List<fractionUnits> _listOfFractions = new List<fractionUnits>();
+        [SerializeField] private List<fractionUnits> _listOfFractionsUnitsPrefabs = new List<fractionUnits>();
 
         [Serializable]
         public class fractionUnits {
             public List<Unit> _listOfBotUnits = new List<Unit>();
             public List<Unit> _listOfDummyUnits = new List<Unit>();
         }
+
+        private class spawnedFractions {
+            public List<Unit> _listOfUnits = new List<Unit>();
+        }
         public static UnitsHolderManager instance => _instance;
 
         public int playerFractionId => _playerFractionId;
 
         private List<Unit> _spawnedUnits = new List<Unit>();
+        private List<Unit>[] _listOfSpawnedFractions;
         private int _playerFractionId;
 
         private void Awake() {
@@ -32,12 +37,21 @@ namespace Project.Managers {
             _playerFractionId = _playerPrefab.fractionIdentifier;
         }
 
+        private void Start() {
+            _listOfSpawnedFractions = new List<Unit>[_listOfFractionsUnitsPrefabs.Count];
+            for (int i = 0; i < _listOfSpawnedFractions.Length; i++) {
+                _listOfSpawnedFractions[i] = new List<Unit>();
+            }
+        }
+
         public void UnitSpawned(Unit unit) {
             _spawnedUnits.Add(unit);
+            AddUnitToFractionList(unit);
             unitSpawned?.Invoke(unit.fractionIdentifier);
         }
 
         public void UnitDied(Unit unit) {
+            RemoveUnitFromFractionList(unit);
             _spawnedUnits.Remove(unit);
         }
 
@@ -59,14 +73,26 @@ namespace Project.Managers {
             return unitsTransforms;
         }
 
+        public Unit[] GetSpawnedUnitsByFractionId(int fractionId) {
+            if (_listOfSpawnedFractions.Length <= fractionId) {
+                Debug.LogWarning("There are no fraction with " + fractionId + "id");
+                return null;
+            }
+            Unit[] units = new Unit[_listOfSpawnedFractions[fractionId].Count];
+            for (int i = 0; i < units.Length; i++) {
+                units[i] = _listOfSpawnedFractions[fractionId][i];
+            }
+            return units;
+        }
+
         public Unit GetPlayerPrefab() {
             return _playerPrefab;
         }
 
         public Unit GetRandomBotByFractionId(int fractionId) {
-            if (fractionId < _listOfFractions.Count)
-                return _listOfFractions[fractionId]
-                    ._listOfBotUnits[Random.Range(0, _listOfFractions[fractionId]._listOfBotUnits.Count)];
+            if (fractionId < _listOfFractionsUnitsPrefabs.Count)
+                return _listOfFractionsUnitsPrefabs[fractionId]
+                    ._listOfBotUnits[Random.Range(0, _listOfFractionsUnitsPrefabs[fractionId]._listOfBotUnits.Count)];
 
             Debug.LogError("There is no spawn position for " + fractionId + " fractions bots");
             return null;
@@ -74,12 +100,31 @@ namespace Project.Managers {
         }
 
         public Unit GetRandomDummyByFractionId(int fractionId) {
-            if (fractionId < _listOfFractions.Count)
-            return _listOfFractions[fractionId]
-                ._listOfDummyUnits[Random.Range(0, _listOfFractions[fractionId]._listOfDummyUnits.Count)];
+            if (fractionId < _listOfFractionsUnitsPrefabs.Count)
+            return _listOfFractionsUnitsPrefabs[fractionId]
+                ._listOfDummyUnits[Random.Range(0, _listOfFractionsUnitsPrefabs[fractionId]._listOfDummyUnits.Count)];
             
             Debug.LogError("There is no spawn position for " + fractionId + " fractions dummies");
             return null;
+        }
+
+        private void AddUnitToFractionList(Unit unit) {
+            int fractionId = unit.fractionIdentifier;
+            if (_listOfSpawnedFractions.Length <= fractionId) {
+                Debug.LogWarning("There are no fraction with " + fractionId + "id");
+                return;
+            }
+            _listOfSpawnedFractions[fractionId].Add(unit);
+        }
+
+        private void RemoveUnitFromFractionList(Unit unit) {
+            int fractionId = unit.fractionIdentifier;
+            if (_listOfSpawnedFractions.Length <= fractionId) {
+                Debug.LogWarning("There are no fraction with " + fractionId + "id");
+                return;
+            }
+
+            _listOfSpawnedFractions[fractionId].Remove(unit);
         }
     }
 }
